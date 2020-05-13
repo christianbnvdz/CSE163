@@ -102,7 +102,7 @@
                    .range(d3.schemeCategory10.concat(d3.schemeAccent));
 
     //Define SVG
-      var svg = d3.select("body")
+    var svg = d3.select("body")
         .append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
@@ -121,71 +121,67 @@
     //Define Tooltip here
     
       
-       //Define Axis
+    //Define Axis
     var xAxis = d3.axisBottom(xScale).tickPadding(2);
     var yAxis = d3.axisLeft(yScale).tickPadding(2);
     
     //Get Data
     d3.csv("scatterdata.csv").then(function(scatterdataset){
-    // Define domain for xScale and yScale
-    console.log(scatterdataset);
+      // Define domain for xScale and yScale
+      console.log(scatterdataset);
     
    
-    //Draw Scatterplot
-        svg.selectAll(".dot")
-        .data(scatterdataset)
-        .enter().append("circle")
-        .attr("class", "dot")
-        .attr("r", "4")
-        .attr("cx", function(d) {return xScale(d.gdp);})
-        .attr("cy", function(d) {return yScale(d.epc);})
-        .style("fill", function (d) { return colors(d.country); });
-    //Add .on("mouseover", .....
-    //Add Tooltip.html with transition and style
-    //Then Add .on("mouseout", ....
+      //Draw Scatterplot
+      svg.selectAll(".dot")
+         .data(scatterdataset)
+         .enter().append("circle")
+         .attr("class", "dot")
+         .attr("r", "4")
+         .attr("cx", function(d) {return xScale(d.gdp);})
+         .attr("cy", function(d) {return yScale(d.epc);})
+         .style("fill", function (d) { return colors(d.country); });
+      //Add .on("mouseover", .....
+      //Add Tooltip.html with transition and style
+      //Then Add .on("mouseout", ....
     
-    //Scale Changes as we Zoom
-    // Call the function d3.behavior.zoom to Add zoom
+      //Scale Changes as we Zoom
+      // Call the function d3.behavior.zoom to Add zoom
 
-    //Draw Country Names
-        svg.selectAll(".text")
-        .data(scatterdataset)
-        .enter().append("text")
-        .attr("class","text")
-        .style("text-anchor", "start")
-        .attr("x", function(d) {return xScale(d.gdp);})
-        .attr("y", function(d) {return yScale(d.epc);})
-        .style("fill", "black")
-        .text(function (d) {return d.name; });
+      //Draw Country Names
+      svg.selectAll(".text")
+         .data(scatterdataset)
+         .enter().append("text")
+         .attr("class","text")
+         .style("text-anchor", "start")
+         .attr("x", function(d) {return xScale(d.gdp);})
+         .attr("y", function(d) {return yScale(d.epc);})
+         .style("fill", "black")
+         .text(function (d) {return d.name; });
 
- //x-axis
-    svg.append("g")
-        .attr("class", "x axis")
-        .attr("transform", "translate(0," + height + ")")
-        .call(xAxis)
-        .append("text")
-        .attr("class", "label")
-        .attr("y", 50)
-        .attr("x", width/2)
-        .style("text-anchor", "middle")
-        .attr("font-size", "12px")
-        .text("GDP (in Trillion US Dollars) in 2010");
-
+      //x-axis
+      svg.append("g")
+         .attr("class", "x axis")
+         .attr("transform", "translate(0," + height + ")")
+         .call(xAxis)
+         .append("text")
+         .attr("class", "label")
+         .attr("y", 50)
+         .attr("x", width/2)
+         .style("text-anchor", "middle")
+         .attr("font-size", "12px")
+         .text("GDP (in Trillion US Dollars) in 2010");
     
-    //Y-axis
-    svg.append("g")
-        .attr("class", "y axis")
-        .call(yAxis)
-        .append("text")
-        .attr("class", "label")
-        .attr("transform", "rotate(-90)")
-        .attr("y", -50)
-        .attr("x", -50)
-        .attr("dy", ".71em")
-        .style("text-anchor", "end")
-        .attr("font-size", "12px")
-        .text("Energy Consumption per Capita (in Million BTUs per person)");
-
-    
-     
-});
+      //Y-axis
+      svg.append("g")
+         .attr("class", "y axis")
+         .call(yAxis)
+         .append("text")
+         .attr("class", "label")
+         .attr("transform", "rotate(-90)")
+         .attr("y", -50)
+         .attr("x", -50)
+         .attr("dy", ".71em")
+         .style("text-anchor", "end")
+         .attr("font-size", "12px")
+         .text("Energy Consumption per Capita (in Million BTUs per person)");
+    });
