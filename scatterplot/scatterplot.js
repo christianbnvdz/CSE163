@@ -1,4 +1,4 @@
-    var scatterdataset = [ {
+/*    var scatterdataset = [ {
         "name": "United States",
         "country": "United States",
         "gdp": 14.9,
@@ -90,7 +90,7 @@
         "gdp": 1.01,
         "epc": 222,
         "total": 10.7
-    }];
+    }]; */
 
     //Define Margin
     var margin = {top: 50, right: 80, bottom: 50, left: 80}, 
@@ -111,11 +111,11 @@
 
     //Define Scales   
     var xScale = d3.scaleLinear()
-        .domain([0,16]) //Need to redefine this later after loading the data
+        //.domain([0,16]) //Need to redefine this later after loading the data
         .range([0, width]);
 
     var yScale = d3.scaleLinear()
-        .domain([0,450]) //Need to redfine this later after loading the data
+        //.domain([0,450]) //Need to redfine this later after loading the data
         .range([height, 0]);
     
     //Define Tooltip here
@@ -126,8 +126,9 @@
     var yAxis = d3.axisLeft(yScale).tickPadding(2);
     
     //Get Data
+    d3.csv("scatterdata.csv").then(function(scatterdataset){
     // Define domain for xScale and yScale
-    
+    console.log(scatterdataset);
     
    
     //Draw Scatterplot
@@ -187,4 +188,4 @@
 
     
      
-//}
+});
