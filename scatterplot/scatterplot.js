@@ -137,10 +137,10 @@
       console.log(data);
       // Define domain for xScale and yScale
       xScale.domain([0, d3.max(data, function(d){return d.gdp;})]);
-      yScale.domain([0, /*d3.max(data, function(d){return d.epc;})*/ 450]);
+      yScale.domain([0, d3.max(data, function(d){return d.epc;})]);
       // Define domain for color scale
-      //colors.domain();
-   
+      colors.domain(data.map(function(d){return d.country;}));
+
       //Draw Scatterplot
       svg.selectAll(".dot")
          .data(data)
