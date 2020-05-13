@@ -140,13 +140,18 @@
       yScale.domain([0, d3.max(data, function(d){return d.epc;})]);
       // Define domain for color scale
       colors.domain(data.map(function(d){return d.country;}));
+      // define radius scale (D3 book, page 128)
+      var rScale = d3.scaleSqrt()
+                     .domain([0, d3.max(data, function(d){return d.ec;})])
+                     .range([0, 50]);
+
 
       //Draw Scatterplot
       svg.selectAll(".dot")
          .data(data)
          .enter().append("circle")
          .attr("class", "dot")
-         .attr("r", "4")
+         .attr("r", function(d){return rScale(d.ec);})
          .attr("cx", function(d) {return xScale(d.gdp);})
          .attr("cy", function(d) {return yScale(d.epc);})
          .style("fill", function (d) { return colors(d.country); });
