@@ -93,7 +93,7 @@
     }];
 
     //Define Margin
-    var margin = {left: 80, right: 80, top: 50, bottom: 50 }, 
+    var margin = {top: 50, right: 80, bottom: 50, left: 80}, 
         width = 960 - margin.left -margin.right,
         height = 500 - margin.top - margin.bottom;
 
