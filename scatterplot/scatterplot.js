@@ -98,7 +98,8 @@
         height = 500 - margin.top - margin.bottom;
 
     //Define Color
-    var colors = d3.scaleOrdinal().domain(d3.schemeCategory10);
+    var colors = d3.scaleOrdinal()
+                   .range(d3.schemeCategory10.concat(d3.schemeAccent));
 
     //Define SVG
       var svg = d3.select("body")
