@@ -92,6 +92,8 @@
         "total": 10.7
     }]; */
 
+    // set the max raduis size
+    var MAX_RADIUS = 50;
     //Define Margin
     var margin = {top: 50, right: 80, bottom: 50, left: 80}, 
         width = 960 - margin.left -margin.right,
@@ -143,8 +145,7 @@
       // define radius scale (D3 book, page 128)
       var rScale = d3.scaleSqrt()
                      .domain([0, d3.max(data, function(d){return d.ec;})])
-                     .range([0, 50]);
-
+                     .range([0, MAX_RADIUS]);
 
       //Draw Scatterplot
       svg.selectAll(".dot")
