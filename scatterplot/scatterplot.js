@@ -98,7 +98,7 @@
         height = 500 - margin.top - margin.bottom;
 
     //Define Color
-    //var colors = d3.scale.category20();
+    var colors = d3.scale.category20();
 
     //Define SVG
       var svg = d3.select("body")
@@ -136,8 +136,8 @@
         .attr("class", "dot")
         .attr("r", "1")
         .attr("cx", function(d) {return xScale(d.gdp);})
-        .attr("cy", function(d) {return yScale(d.epc);});
-        //.style("fill", function (d) { return colors(d.country); });
+        .attr("cy", function(d) {return yScale(d.epc);})
+        .style("fill", function (d) { return colors(d.country); });
     //Add .on("mouseover", .....
     //Add Tooltip.html with transition and style
     //Then Add .on("mouseout", ....
