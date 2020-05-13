@@ -13,4 +13,8 @@ body {
   stroke: #000;
 }
 
+.label {
+  fill: black;
+}
+
 /*Add Tooltip Type here*/
