@@ -126,14 +126,24 @@
     var yAxis = d3.axisLeft(yScale).tickPadding(2);
     
     //Get Data
-    d3.csv("scatterdata.csv").then(function(scatterdataset){
+    d3.csv("scatterdata.csv").then(function(data){
+      //Convert the numerical data to numbers
+      data.forEach(function(d){
+        d.gdp = +d.gdp;
+        d.population = +d.population;
+        d.epc = +d.epc;
+        d.ec = +d.ec;
+      });
+      console.log(data);
       // Define domain for xScale and yScale
-      console.log(scatterdataset);
-    
+      xScale.domain([0, d3.max(data, function(d){return d.gdp;})]);
+      yScale.domain([0, /*d3.max(data, function(d){return d.epc;})*/ 450]);
+      // Define domain for color scale
+      //colors.domain();
    
       //Draw Scatterplot
       svg.selectAll(".dot")
-         .data(scatterdataset)
+         .data(data)
          .enter().append("circle")
          .attr("class", "dot")
          .attr("r", "4")
@@ -149,7 +159,7 @@
 
       //Draw Country Names
       svg.selectAll(".text")
-         .data(scatterdataset)
+         .data(data)
          .enter().append("text")
          .attr("class","text")
          .style("text-anchor", "start")
