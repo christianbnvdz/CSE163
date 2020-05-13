@@ -136,7 +136,7 @@
         .attr("class", "dot")
         .attr("r", "1")
         .attr("cx", function(d) {return xScale(d.gdp);})
-        .attr("cy", function(d) {return yScale(d.epc);})
+        .attr("cy", function(d) {return yScale(d.epc);});
         //.style("fill", function (d) { return colors(d.country); });
     //Add .on("mouseover", .....
     //Add Tooltip.html with transition and style
