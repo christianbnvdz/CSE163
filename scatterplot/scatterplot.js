@@ -110,11 +110,11 @@
 
     //Define Scales   
     var xScale = d3.scale.linear()
-        .domain([0,16]) //Need to redefine this later after loading the data
+        //.domain([0,16]) //Need to redefine this later after loading the data
         .range([0, width]);
 
     var yScale = d3.scale.linear()
-        .domain([0,450]) //Need to redfine this later after loading the data
+        //.domain([0,450]) //Need to redfine this later after loading the data
         .range([height, 0]);
     
     //Define Tooltip here
