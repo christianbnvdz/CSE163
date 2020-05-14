@@ -1,9 +1,6 @@
     // set the max radius size
     var MAX_RADIUS = 50;
 
-    // radius padding
-    var rad_pad = {top: 0, right: 0};
-
     //Define Margin
     var margin = {top: 50, right: 80, bottom: 50, left: 80}, 
         width = 960 - margin.left -margin.right,
@@ -72,11 +69,18 @@
                      .domain([0, d3.max(data, function(d){return d.ec;})])
                      .range([0, MAX_RADIUS]);
  
-      //get max gdp
-      var max_gdp = d3.max(data, function(d){return d.gdp;});
       // Define domains for each scale
-      xScale.domain([0, d3.max(data, function(d){return d.gdp;}) + rad_pad.right]);
-      yScale.domain([0, d3.max(data, function(d){return d.epc;}) + rad_pad.top]);
+      xScale.domain([0, d3.max(data, function(d){return d.gdp;})]);
+      // Define the domain again in terms of itself, this puts the
+      // circles from overflowing outside of the x axis
+      xScale.domain([0, d3.max(data, function(d){return d.gdp;}) +
+                                     xScale.invert(MAX_RADIUS)]);
+      yScale.domain([0, d3.max(data, function(d){return d.epc;})]);
+      //DO the same as with the x scale. We inverted above because
+      //We wanted to know how much gdp is in MAX_RADIUS pixels. Below,
+      //We don't need to because ep and epc are the same units. 
+      yScale.domain([0, d3.max(data, function(d){return d.epc;}) +
+                                     MAX_RADIUS]);
       colors.domain(data.map(function(d){return d.country;}));
 
       //Draw Scatterplot
