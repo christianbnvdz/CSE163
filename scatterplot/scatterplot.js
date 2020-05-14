@@ -168,4 +168,74 @@
          .style("text-anchor", "end")
          .attr("font-size", "12px")
          .text("Energy Consumption per Capita (in Million BTUs per person)");
+
+      //Add legend
+      //set dimensions for the legend
+      var lgnd_dim = {w: 3 * margin.right, h: 5 * margin.bottom}
+      //set the top left x and y coordinate for the legend
+      var lgnd_pos = {x: width - lgnd_dim.w, y: height - lgnd_dim.h}
+      var legend = svg.append("rect")
+                      .attr("transform", "translate(" + lgnd_pos.x +
+                                          ", " + lgnd_pos.y + ")")
+                      .attr("width", + lgnd_dim.w + "px")
+                      .attr("height", lgnd_dim.h + "px")
+                      .style("fill", "lightgrey");
+
+      //Add lagest circle to the legend (100 T BTU's)
+      svg.append("circle")
+         .attr("r", rScale(100))
+         .attr("cx", lgnd_pos.x + 175)
+         .attr("cy", lgnd_pos.y + 160)
+         .style("fill", "white");
+
+      //Add largest circle label
+      svg.append("text")
+         .attr("x", lgnd_pos.x + 20)
+         .attr("y", lgnd_pos.y + 165)
+         .attr("font-size", "12px")
+         .style("fill", "black")
+         .text("100 Trillion BTUs");
+
+      //Add medium circle (10 T BTU's)
+      svg.append("circle")
+         .attr("r", rScale(10))
+         .attr("cx", lgnd_pos.x + 175)
+         .attr("cy", lgnd_pos.y + 80)
+         .style("fill", "white");
+      
+      //Add label for medium circle
+      svg.append("text")
+         .attr("x", lgnd_pos.x + 20)
+         .attr("y", lgnd_pos.y + 83)
+         .attr("font-size", "12px")
+         .style("fill", "black")
+         .text("10 Trillion BTUs");
+
+      //add smallest circle (1 T BTU's)
+      svg.append("circle")
+         .attr("r", rScale(1))
+         .attr("cx", lgnd_pos.x + 175)
+         .attr("cy", lgnd_pos.y + 40)
+         .style("fill", "white");
+
+      //label for smallest circle
+      svg.append("text")
+         .attr("x", lgnd_pos.x + 20)
+         .attr("y", lgnd_pos.y + 42)
+         .attr("font-size", "12px")
+         .style("fill", "black")
+         .text("1 Trillion BTUs");
+
+      //Add legend title
+      svg.append("text")
+         .attr("x", lgnd_pos.x + 50)
+         .attr("y", lgnd_pos.y + 225)
+         .attr("font-size", "12px")
+         .style("fill", "Green")
+         .text("Total Energy Consumption");
     });
+
+
+
+
+
