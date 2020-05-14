@@ -1,97 +1,3 @@
-/*    var scatterdataset = [ {
-        "name": "United States",
-        "country": "United States",
-        "gdp": 14.9,
-        "epc": 317,
-        "total": 98.9
-    }, {
-
-        "name": "China",
-        "country": "China",
-        "gdp": 5.93,
-        "epc": 76,
-        "total": 103
-    }, {
-        "name": "Japan",
-        "country": "Japan",
-        "gdp": 5.49,
-        "epc": 171, 
-        "total": 21.7
-    }, {
-        "name": "Germany",
-        "country": "Germany",
-        "gdp": 3.28,
-        "epc": 171,
-        "total": 14.1
-    }, {
-        "name": "France",
-        "country": "France",
-        "gdp": 2.54,
-        "epc": 170,
-        "total": 10.7
-    }, {
-        "name": "United Kingdom",
-        "country": "United Kingdom",
-        "gdp": 2.28,
-        "epc": 143,
-        "total": 8.8
-    }, {
-        "name": "Brazil",
-        "country": "Brazil",
-        "gdp": 2.14,
-        "epc": 58,
-        "total": 11.3
-    }, {
-        "name": "Italy",
-        "country": "Italy",
-        "gdp": 2.04,
-        "epc": 126,
-        "total": 7.6
-    }, {
-        "name": "India",
-        "country": "India",
-        "gdp": 1.70,
-        "epc": 19,
-        "total": 22.9
-    }, {
-        "name": "Canada",
-        "country": "Canada",
-        "gdp": 1.57,
-        "epc": 385,
-        "total": 13.1
-    }, {
-        "name": "Russian Federation",
-        "country": "Russian Federation",
-        "gdp": 1.52,
-        "epc": 206,
-        "total": 29.5
-    }, {
-
-        "name": "Spain",
-        "country": "Spain",
-        "gdp": 1.37,
-        "epc": 134,
-        "total": 6.1
-    }, {
-        "name": "Australia",
-        "country": "Australia",
-        "gdp": 1.14,
-        "epc": 270,
-        "total": 6.0
-    }, {
-        "name": "Mexico",
-        "country": "Mexico",
-        "gdp": 1.04,
-        "epc": 65,
-        "total": 7.6
-    }, {
-        "name": "Korea",
-        "country": "Korea",
-        "gdp": 1.01,
-        "epc": 222,
-        "total": 10.7
-    }]; */
-
     // set the max raduis size
     var MAX_RADIUS = 50;
     //Define Margin
@@ -164,8 +70,8 @@
                      .domain([0, d3.max(data, function(d){return d.ec;})])
                      .range([0, MAX_RADIUS]);
       // Define domain for xScale and yScale
-      xScale.domain([0, d3.max(data, function(d){return d.gdp;}) + 1]);
-      yScale.domain([0, d3.max(data, function(d){return d.epc;}) + 20]);
+      xScale.domain([0, d3.max(data, function(d){return d.gdp;})]);
+      yScale.domain([0, d3.max(data, function(d){return d.epc;})]);
       // Define domain for color scale
       colors.domain(data.map(function(d){return d.country;}));
 
