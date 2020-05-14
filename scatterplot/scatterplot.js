@@ -1,13 +1,9 @@
-    // set the max raduis size
+    // set the max radius size
     var MAX_RADIUS = 50;
     //Define Margin
     var margin = {top: 50, right: 80, bottom: 50, left: 80}, 
         width = 960 - margin.left -margin.right,
         height = 500 - margin.top - margin.bottom;
-
-    //Define Color
-    var colors = d3.scaleOrdinal()
-                   .range(d3.schemeCategory10.concat(d3.schemeAccent));
 
     //Define SVG
     var svg = d3.select("body")
@@ -17,22 +13,24 @@
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    //Define Scales   
+    //Define Scale ranges
     var xScale = d3.scaleLinear()
-        //.domain([0,16]) //Need to redefine this later after loading the data
         .range([0, width]);
 
     var yScale = d3.scaleLinear()
-        //.domain([0,450]) //Need to redfine this later after loading the data
         .range([height, 0]);
     
-    //Define Tooltip here
+    var colors = d3.scaleOrdinal()
+                   .range(d3.schemeCategory10.concat(d3.schemeAccent));
+    
+    //Define Tooltip here, initialy hidden
     var tooltip = d3.select("body")
                     .append("div")
-                    .attr("id", "tooltip")
-                    .attr("class", "hidden");
-    // define string with spaces
+                    .attr("id", "tooltip");
+
+    //this string is the spacing we insert to make things neat in the tooltip
     var toolFieldSpace = " \xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0 ";
+    //fill the tooltip with the proper elements
     tooltip.html("<p class=\"countryField\"></p>" +
                  "<div>" +
                    "<p class=\"toolField\"> Population :</p>" +
@@ -52,7 +50,7 @@
                  "</div>");
 
     //Define Axis
-    var xAxis = d3.axisBottom(xScale).tickPadding(1);
+    var xAxis = d3.axisBottom(xScale).tickPadding(2);
     var yAxis = d3.axisLeft(yScale).tickPadding(2);
     
     //Get Data
@@ -69,10 +67,10 @@
       var rScale = d3.scaleSqrt()
                      .domain([0, d3.max(data, function(d){return d.ec;})])
                      .range([0, MAX_RADIUS]);
-      // Define domain for xScale and yScale
+
+      // Define domains for each scale
       xScale.domain([0, d3.max(data, function(d){return d.gdp;})]);
       yScale.domain([0, d3.max(data, function(d){return d.epc;})]);
-      // Define domain for color scale
       colors.domain(data.map(function(d){return d.country;}));
 
       //Draw Scatterplot
@@ -84,22 +82,28 @@
          .attr("cx", function(d) {return xScale(d.gdp);})
          .attr("cy", function(d) {return yScale(d.epc);})
          .style("fill", function (d) { return colors(d.country); });
+
       //Add .on("mouseover", .....
       var circles = d3.selectAll("circle").on("mouseover", circleToolTip);
+      //This will prevent the tooltip itself from preventing the transition
       d3.select("#tooltip").on("mouseover", circleToolTip);
 
+      //tooltip transition on mouseover function
       function circleToolTip(d, i) {
+        //get x and y position of circle
         var xPos = +d3.select(this).attr("cx");
         var yPos = +d3.select(this).attr("cy");
-        tooltip.attr("class", "");
+        //set the tooltip to have those x, y coords
         d3.select("#tooltip")
           .style("left", xPos + "px")
           .style("top", yPos + "px");
+        //transition from transparent to the proper colors
         tooltip.transition()
                .duration(1000)
                .style("background-color", colors(d.country))
                .style("border-color", "black")
                .style("color", "black");
+        //add in and format the data
         d3.select(".countryField").text(d.country);
         d3.select(".populationField").text(toolFieldSpace + d.population+" Million");
         d3.select(".gdpField").text(toolFieldSpace + "$" + d.gdp + " Trillion");
@@ -109,13 +113,14 @@
       //Add Tooltip.html with transition and style
       //Then Add .on("mouseout", ....
       circles.on("mouseout", function(d, i) {
+        //Transition to a transparent tooltip
         tooltip.transition()
                .duration(250)
                .style("background-color", "transparent")
                .style("border-color", "transparent")
-               .style("color", "transparent");
-        
+               .style("color", "transparent"); 
       });
+
       //Scale Changes as we Zoom
       // Call the function d3.behavior.zoom to Add zoom
 
@@ -128,7 +133,7 @@
          .attr("x", function(d) {return xScale(d.gdp);})
          .attr("y", function(d) {return yScale(d.epc);})
          .style("fill", "black")
-         .text(function (d) {return d.name; });
+         .text(function (d) {return d.country; });
 
       //x-axis
       svg.append("g")
