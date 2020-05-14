@@ -18,3 +18,34 @@ body {
 }
 
 /*Add Tooltip Type here*/
+#tooltip {
+  position: absolute;
+  background-color: transparent;
+  border-color: transparent;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 5px;
+  color: transparent;
+  /*https://techstacker.com/css-remove-hover-pointer-events-none/*/
+  pointer-events: none;
+}
+
+.hidden {
+  display: none;
+}
+
+.countryField {
+  text-align: center;
+}
+
+.toolField {
+  display: inline-block;
+  margin: 0px;
+}
+
+.populationField, .gdpField, .epcField, .totalField {
+  display: inline-block;
+  margin: 0px;
+  float: right;
+}

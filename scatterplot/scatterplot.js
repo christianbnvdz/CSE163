@@ -121,10 +121,32 @@
         .range([height, 0]);
     
     //Define Tooltip here
-    
-      
+    var tooltip = d3.select("body")
+                    .append("div")
+                    .attr("id", "tooltip")
+                    .attr("class", "hidden");
+    // define string with spaces
+    var toolFieldSpace = " \xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0 ";
+    tooltip.html("<p class=\"countryField\"></p>" +
+                 "<div>" +
+                   "<p class=\"toolField\"> Population :</p>" +
+                   "<p class=\"populationField\"></p>" +
+                 "</div>" +
+                 "<div>" +
+                   "<p class=\"toolField\">GDP" + toolFieldSpace + ":</p>" +
+                   "<p class=\"gdpField\"></p>" +
+                 "</div>" +
+                 "<div>" +
+                   "<p class=\"toolField\">EPC" + toolFieldSpace + ":</p>" +
+                   "<p class=\"epcField\"></p>" +
+                 "</div>" +
+                 "<div>" +
+                   "<p class=\"toolField\">Total" + toolFieldSpace + ":</p>" +
+                   "<p class=\"totalField\"></p>" +
+                 "</div>");
+
     //Define Axis
-    var xAxis = d3.axisBottom(xScale).tickPadding(2);
+    var xAxis = d3.axisBottom(xScale).tickPadding(1);
     var yAxis = d3.axisLeft(yScale).tickPadding(2);
     
     //Get Data
@@ -136,16 +158,16 @@
         d.epc = +d.epc;
         d.ec = +d.ec;
       });
-      console.log(data);
-      // Define domain for xScale and yScale
-      xScale.domain([0, d3.max(data, function(d){return d.gdp;})]);
-      yScale.domain([0, d3.max(data, function(d){return d.epc;})]);
-      // Define domain for color scale
-      colors.domain(data.map(function(d){return d.country;}));
-      // define radius scale (D3 book, page 128)
+
+      //Define radius scale (D3 book, page 128)
       var rScale = d3.scaleSqrt()
                      .domain([0, d3.max(data, function(d){return d.ec;})])
                      .range([0, MAX_RADIUS]);
+      // Define domain for xScale and yScale
+      xScale.domain([0, d3.max(data, function(d){return d.gdp;}) + 1]);
+      yScale.domain([0, d3.max(data, function(d){return d.epc;}) + 20]);
+      // Define domain for color scale
+      colors.domain(data.map(function(d){return d.country;}));
 
       //Draw Scatterplot
       svg.selectAll(".dot")
@@ -157,9 +179,37 @@
          .attr("cy", function(d) {return yScale(d.epc);})
          .style("fill", function (d) { return colors(d.country); });
       //Add .on("mouseover", .....
+      var circles = d3.selectAll("circle").on("mouseover", circleToolTip);
+      d3.select("#tooltip").on("mouseover", circleToolTip);
+
+      function circleToolTip(d, i) {
+        var xPos = +d3.select(this).attr("cx");
+        var yPos = +d3.select(this).attr("cy");
+        tooltip.attr("class", "");
+        d3.select("#tooltip")
+          .style("left", xPos + "px")
+          .style("top", yPos + "px");
+        tooltip.transition()
+               .duration(1000)
+               .style("background-color", colors(d.country))
+               .style("border-color", "black")
+               .style("color", "black");
+        d3.select(".countryField").text(d.country);
+        d3.select(".populationField").text(toolFieldSpace + d.population+" Million");
+        d3.select(".gdpField").text(toolFieldSpace + "$" + d.gdp + " Trillion");
+        d3.select(".epcField").text(toolFieldSpace + d.epc + " Million BTU's");
+        d3.select(".totalField").text(toolFieldSpace + d.ec + " Trillion BTU's");
+      };
       //Add Tooltip.html with transition and style
       //Then Add .on("mouseout", ....
-    
+      circles.on("mouseout", function(d, i) {
+        tooltip.transition()
+               .duration(250)
+               .style("background-color", "transparent")
+               .style("border-color", "transparent")
+               .style("color", "transparent");
+        
+      });
       //Scale Changes as we Zoom
       // Call the function d3.behavior.zoom to Add zoom
 
