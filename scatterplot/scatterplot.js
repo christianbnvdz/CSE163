@@ -1,5 +1,9 @@
     // set the max radius size
     var MAX_RADIUS = 50;
+
+    // radius padding
+    var rad_pad = {top: 0, right: 0};
+
     //Define Margin
     var margin = {top: 50, right: 80, bottom: 50, left: 80}, 
         width = 960 - margin.left -margin.right,
@@ -15,15 +19,15 @@
 
     //Define Scale ranges
     var xScale = d3.scaleLinear()
-        .range([0, width]);
+        .rangeRound([0, width]);
 
     var yScale = d3.scaleLinear()
-        .range([height, 0]);
+        .rangeRound([height, 0]);
     
     var colors = d3.scaleOrdinal()
                    .range(d3.schemeCategory10.concat(d3.schemeAccent));
     
-    //Define Tooltip here, initialy hidden
+    //Define Tooltip here
     var tooltip = d3.select("body")
                     .append("div")
                     .attr("id", "tooltip");
@@ -67,10 +71,12 @@
       var rScale = d3.scaleSqrt()
                      .domain([0, d3.max(data, function(d){return d.ec;})])
                      .range([0, MAX_RADIUS]);
-
+ 
+      //get max gdp
+      var max_gdp = d3.max(data, function(d){return d.gdp;});
       // Define domains for each scale
-      xScale.domain([0, d3.max(data, function(d){return d.gdp;})]);
-      yScale.domain([0, d3.max(data, function(d){return d.epc;})]);
+      xScale.domain([0, d3.max(data, function(d){return d.gdp;}) + rad_pad.right]);
+      yScale.domain([0, d3.max(data, function(d){return d.epc;}) + rad_pad.top]);
       colors.domain(data.map(function(d){return d.country;}));
 
       //Draw Scatterplot
@@ -90,16 +96,13 @@
 
       //tooltip transition on mouseover function
       function circleToolTip(d, i) {
-        //get x and y position of circle
-        var xPos = +d3.select(this).attr("cx");
-        var yPos = +d3.select(this).attr("cy");
         //set the tooltip to have those x, y coords
         d3.select("#tooltip")
-          .style("left", xPos + "px")
-          .style("top", yPos + "px");
+          .style("left", d3.event.pageX + "px")
+          .style("top", d3.event.pageY + "px");
         //transition from transparent to the proper colors
         tooltip.transition()
-               .duration(1000)
+               .duration(500)
                .style("background-color", colors(d.country))
                .style("border-color", "black")
                .style("color", "black");
