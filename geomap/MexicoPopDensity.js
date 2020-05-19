@@ -21,7 +21,8 @@ d3.csv("mexico.csv").then(function(popData){
   //Get the array of features (states)
   //This array holds the geometry data and properties for each state
   var states = geoData.features;
-
+  console.log("states from geoData.features:");
+  console.log(states);
   /*Strategy taken by Scott Murray D3js book*/
   //Merge the data into one list
   for (var i = 0; i < popData.length; ++i) {
