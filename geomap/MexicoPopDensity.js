@@ -1,7 +1,7 @@
 //Set margins
-var margin = {top: 50, right: 50, bottom: 50, left: 50};
+var margin = {top: 0, right: 0, bottom: 0, left: 0};
 //Set visualization's width and height
-var width = 700 - margin.left - margin.right;
+var width = 960 - margin.left - margin.right;
 var height = 500 - margin.top - margin.bottom;
 
 //Add the containing svg element to the visSpace div
@@ -34,21 +34,32 @@ d3.csv("Mexico.csv").then(function(popData){
       }
     }
   }
-/*
+
+  //Create the projection
+  var projection = d3.geoAlbers()
+                     .rotate([102, 0])
+                     .center([0, 24])
+                     .parallels([17.5, 29.5])
+                     .scale(1000)
+                     .translate([width/2, height/2]);
+
   //Create a path generator
   var pathGenerator = d3.geoPath()
-                        ;
+                        .projection(projection);
 
-  //Make a new grouping that holds all the state's paths
-  var geoStateGroup = g.append("g");
+
   //Add path elements for all geostates
-  geoStateGroup.selectAll("path")
-               .data(states)
-               .enter()
-               .append("path")
-               .attr("d", pathGenerator)
-               .attr("fill", "steelblue")
-               .attr("stroke", "white");
-*/
+  g.selectAll("path")
+   .data(states)
+   .enter()
+   .append("path")
+   .attr("d", pathGenerator)
+   .attr("stroke", "white")
+   .attr("fill", "black");
+
+console.log(states);
 });
 });
+
+
+
