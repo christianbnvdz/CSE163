@@ -22,6 +22,7 @@ d3.csv("mexico.csv").then(function(popData){
   //This array holds the geometry data and properties for each state
   var states = geoData.features;
 
+  /*Strategy taken by Scott Murray D3js book*/
   //Merge the data into one list
   for (var i = 0; i < popData.length; ++i) {
     var stateName = popData[i].state;
@@ -45,6 +46,7 @@ d3.csv("mexico.csv").then(function(popData){
                      .domain([0, 50, 100, 250, 500, 750, 1000])
                      .range(colorRange);
   //Create the projection
+  /*Projection focus on mexico taken from https://bl.ocks.org/mbostock/9265674 */
   var projection = d3.geoAlbers()
                      .rotate([102, 0])
                      .center([0, 24])
