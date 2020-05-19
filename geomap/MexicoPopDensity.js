@@ -17,7 +17,7 @@ var g = svg.append("g")
 
 //Load in the json and csv file
 d3.json("Mexico.json").then(function(geoData){
-d3.csv("mexico.csv").then(function(popData){
+d3.csv("Mexico.csv").then(function(popData){
   //Get the array of features (states)
   //This array holds the geometry data and properties for each state
   var states = geoData.features;
