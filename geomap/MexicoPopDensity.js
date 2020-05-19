@@ -17,7 +17,7 @@ var g = svg.append("g")
 
 //Load in the json and csv file
 d3.json("Mexico.json").then(function(geoData){
-d3.csv("Mexico.csv").then(function(popData){
+d3.csv("mexico.csv").then(function(popData){
   //Get the array of features (states)
   //This array holds the geometry data and properties for each state
   var states = geoData.features;
@@ -31,10 +31,18 @@ d3.csv("Mexico.csv").then(function(popData){
       if (stateName == states[j].properties.NAME_1) {
         //Once found, make one of it's properties have the denity value
         states[j].properties.value = stateDensity;
+        break;
       }
     }
   }
 
+  //Make a quantized scale for assigning fill color to states
+  var colorScale = d3.scaleThreshold()
+                     .domain([0, 50, 100, 250, 500, 750, 1000])
+                     .range(["rgb(255, 255, 255)", "rgb(255, 180, 180)",
+                             "rgb(255, 100, 100)", "rgb(255, 30, 30)",
+                             "rgb(200, 0, 0)", "rgb(128, 0, 0)", 
+                             "rgb(64, 0, 0)"]);
   //Create the projection
   var projection = d3.geoAlbers()
                      .rotate([102, 0])
@@ -47,19 +55,16 @@ d3.csv("Mexico.csv").then(function(popData){
   var pathGenerator = d3.geoPath()
                         .projection(projection);
 
+  //Make a group for all the states' paths
+  var stateGroup = g.append("g")
+                    .attr("stroke", "black");
+  //Add path elements for all states
+  stateGroup.selectAll("path")
+            .data(states)
+            .enter()
+            .append("path")
+            .attr("d", pathGenerator)
+            .attr("fill", function(d){return colorScale(d.properties.value);});
 
-  //Add path elements for all geostates
-  g.selectAll("path")
-   .data(states)
-   .enter()
-   .append("path")
-   .attr("d", pathGenerator)
-   .attr("stroke", "white")
-   .attr("fill", "black");
-
-console.log(states);
 });
 });
-
-
-
