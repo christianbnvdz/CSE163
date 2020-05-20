@@ -33,6 +33,8 @@ d3.csv("Mexico.csv").then(function(popData){
       if (stateName == states[j].properties.NAME_1) {
         //Once found, make one of it's properties have the denity value
         states[j].properties.value = stateDensity;
+        states[j].properties.area = popData[i].area;
+        states[j].properties.population = popData[i].pop;
         break;
       }
     }
@@ -68,6 +70,49 @@ d3.csv("Mexico.csv").then(function(popData){
             .append("path")
             .attr("d", pathGenerator)
             .attr("fill", function(d){return colorScale(d.properties.value);});
+
+  //Make a tooltip
+  var tooltip = d3.select("body")
+                  .append("div")
+                  .attr("id", "tooltip")
+                  .attr("class", "hidden");
+  tooltip.append("p").append("b").attr("id", "stateField");
+  tooltip.append("p").attr("id", "areaField");
+  tooltip.append("p").attr("id", "popField");
+  tooltip.append("p").attr("id", "densityField");
+  //Set an event for when a path is hovered over to display the tooltip 
+  stateGroup.selectAll("path").on("mousemove", showTooltip);
+  //Set the action function on mousemove
+  function showTooltip(d, i) {
+    //Make the tool tip appear at this x,y
+    d3.select("#tooltip")
+      .style("left", d3.event.pageX - 70 + "px")
+      .style("top", d3.event.pageY - 105 + "px")
+      .attr("class", "");
+    //Unhide the tooltip
+    tooltip.style("background-color", colorScale(d.properties.value))
+           .style("border-color", "black");
+    if (d.properties.value > 249) {
+      tooltip.style("color", "white");
+    } else {
+      tooltip.style("color", "black");
+    }
+    //Add in the data
+    d3.select("#stateField").text(d.properties.NAME_1);
+    d3.select("#popField").text("Population: " + d.properties.population+" People");
+    d3.select("#areaField").text("Area: " + d.properties.area + " KM^2");
+    d3.select("#densityField").text("Density: " + d.properties.value+" People/KM^2");
+  };
+  //Assign on mouseout event
+  stateGroup.selectAll("path").on("mouseout", hideTooltip);
+  //Make mouseout event
+  function hideTooltip(d, i) {
+    d3.select("#tooltip")
+      .attr("class", "hidden");
+    tooltip.style("background-color", "transparent")
+           .style("border-color", "transparent")
+           .style("color", "transparent");
+  }
 
   //Create a grouping for the legend elements
   var legendGroup = g.append("g");
