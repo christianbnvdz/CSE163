@@ -10,8 +10,11 @@
 var width = 750;
 var height = width;
 
-//Append svg to the body
-var svg = d3.select("#visSpace")
+var svg;
+
+//Append svg to the specified div id
+function generateAtID(string){
+  svg = d3.select(string)
             .append("svg")
             .attr("width", width)
             .attr("height", height)
@@ -23,6 +26,10 @@ var svg = d3.select("#visSpace")
             .style("color", "white") 
             .style("background", "radial-gradient(#081f2b 0%, #061616 100%)")
             .style("display", "block");
+}
+
+/*Generate it initally for visSpace*/
+generateAtID("#visSpace");
 
 var scale = (width - 120) * 0.5;
 
@@ -50,6 +57,17 @@ var projection = d3.geoProjection((x, y) => d3.geoStereographicRaw(x, -y))
 
 //geographic path generator
 var path = d3.geoPath(projection);
+
+// Geocircle generator. The radius is specified in degrees and the
+ // center is also specified in longitude latitude degrees. In this 
+ // case, the center is at longitude 0, latitude 90. This is the
+ // top of the northern hemisphere. The radius is 90 degrees, which
+ // is enough to go all the way to the equator. No arguments are
+ // passed, outline is simply the generated circle specified
+ // as the equator.
+ //
+var outline = d3.geoCircle().radius(90).center([0, 90])();
+
 /*
  * Graticule generator. Graticules are the meridian and parallels that
  * appear on a globe. .stepMinor is used to tell the graticule generator
@@ -62,33 +80,7 @@ var path = d3.geoPath(projection);
  */
 var graticule = d3.geoGraticule().stepMinor([15, 10])();
 
-//Generate the path element for the graticule using the graticule
-//generator. Note that this is a singular path. This is important
-//When discussing the outline for the xscale.
-svg.append("path")
-      .attr("d", path(graticule))
-      .attr("fill", "none")
-      .attr("stroke", "currentColor")
-      .attr("stroke-opacity", 0.2);
-
-/*
- * Geocircle generator. The radius is specified in degrees and the
- * center is also specified in longitude latitude degrees. In this 
- * case, the center is at longitude 0, latitude 90. This is the
- * top of the northern hemisphere. The radius is 90 degrees, which
- * is enough to go all the way to the equator. No arguments are
- * passed, outline is simply the generated circle specified
- * as the equator.
- */
-var outline = d3.geoCircle().radius(90).center([0, 90])();
-
-/*The outline, the equator is generated.*/
-svg.append("path")
-      .attr("d", path(outline))
-      .attr("fill", "none")
-      .attr("stroke", "currentColor");
-
-/*The xAxis generator is defined here.*/
+//The xAxis generator is defined here.
 var xAxis = g => g
   .call(g => g.append("g")
       .attr("stroke", "currentColor")
@@ -115,7 +107,7 @@ var xAxis = g => g
       .attr("x", ([x]) => x)
       .attr("y", ([, y]) => y));
 
-/* The y axis generator is defined here */
+// The y axis generator is defined here
 var yAxis = g => g
   .call(g => g.append("g")
     .selectAll("text")
@@ -126,14 +118,6 @@ var yAxis = g => g
       .datum(d => projection([0, d]))
       .attr("x", ([x]) => x)
       .attr("y", ([, y]) => y));
-
-//Generate x axis
-svg.append("g")
-   .call(xAxis);
-
-//Generate y axis
-svg.append("g")  
-   .call(yAxis);
 
 //specifies the center x,y coordinates of the visualization
 //It is not tied to the projection
@@ -157,23 +141,74 @@ var focusRightAscension = svg.append("line")
       .attr("y2", cy)
       .attr("stroke", "yellow");
 
-d3.csv("stars.csv").then(function(data){
-  //This will properly convert the properties into the
-  //right type and then assign latitude and longitude
-  //properties to each star.
-  //We need them in Radian hours and declination degrees.
-  data.forEach(function(d){
-    d3.autoType(d);
-    d[0] = (d.RA_hour + d.RA_min / 60 + d.RA_sec / 3600) * 15; // longitude
-    d[1] = d.dec_deg + d.dec_min / 60 + d.dec_sec / 3600; // latitude
-  });
-  //sort ascending by magnitude
-  data = data.sort((a, b) => d3.ascending(a.magnitude, b.magnitude));
-
-  //linear scale for the radius, hardcoded values. I am
+ //linear scale for the radius, hardcoded values. I am
   //not sure why they're that length.
   var radius = d3.scaleLinear([6, -1], [0, 8]);
-  
+
+
+//Generate the path element for the graticule using the graticule
+//generator. Note that this is a singular path. This is important
+//When discussing the outline for the xscale.
+function generateGraticule(){
+  svg.append("path")
+     .attr("d", path(graticule))
+     .attr("fill", "none")
+     .attr("stroke", "currentColor")
+     .attr("stroke-opacity", 0.2);
+}
+
+/*Selecting the alternate projection*/
+function changeProjection(){
+    projection = d3.geoProjection((x, y) => d3.geoStereographicRaw(x, y))
+    .clipExtent([[0, 0], [width, height]])
+    .translate([width / 2, height / 2])
+    ;
+  path = d3.geoPath(projection);
+}
+
+/*Alternate projection but scaled in*/
+function changeProjectionScaled(){
+    projection = d3.geoProjection((x, y) => d3.geoStereographicRaw(x, y))
+    .scale(scale)
+    .clipExtent([[0, 0], [width, height]])
+    .translate([width / 2, height / 2])
+    ;
+  path = d3.geoPath(projection);
+}
+
+/*Change to correct projection*/
+function changeProjectionBack(){
+    projection = d3.geoProjection((x, y) => d3.geoStereographicRaw(x, -y))
+    .scale(scale)
+    .clipExtent([[0, 0], [width, height]])
+    .rotate([0, -90])
+    .translate([width / 2, height / 2])
+    ;//.precision(0.1);
+  path = d3.geoPath(projection);
+}
+
+//The outline, the equator is generated.
+function generateEquator(){
+  svg.append("path")
+      .attr("d", path(outline))
+      .attr("fill", "none")
+      .attr("stroke", "currentColor");
+}
+
+function generateXAxis(){
+  //Generate x axis
+  svg.append("g")
+     .call(xAxis);
+}
+
+function generateYAxis(){
+  //Generate y axis
+  svg.append("g")  
+     .call(yAxis);
+}
+
+/*Function to generate stars in svg*/
+function generateStars(data){
   //generate the stars as circles. The larger the magnitude,
   //the larger the radius.
   svg.append("g")
@@ -183,8 +218,7 @@ d3.csv("stars.csv").then(function(data){
      .join("circle")
      .attr("r", d => radius(d.magnitude))
      .attr("transform", d => `translate(${projection(d)})`);
-
-  //Voronoi for hovering over the stars. You will be considered as
+   //Voronoi for hovering over the stars. You will be considered as
   //hovering over the nearest star.
   var voronoi = d3.Delaunay.from(data.map(projection)).voronoi([0, 0, width, height]);
 
@@ -226,7 +260,87 @@ ${greek_letter.replace(/[a-z]+/g, w => letters[w])
     focusDeclination.attr("r", null);
     focusRightAscension.attr("x2", cx).attr("y2", cy);
   }
+}
+
+d3.csv("stars.csv").then(function(data){
+  //This will properly convert the properties into the
+  //right type and then assign latitude and longitude
+  //properties to each star.
+  //We need them in Radian hours and declination degrees.
+  data.forEach(function(d){
+    d3.autoType(d);
+    d[0] = (d.RA_hour + d.RA_min / 60 + d.RA_sec / 3600) * 15; // longitude
+    d[1] = d.dec_deg + d.dec_min / 60 + d.dec_sec / 3600; // latitude
+  });
+  //sort ascending by magnitude
+  data = data.sort((a, b) => d3.ascending(a.magnitude, b.magnitude));
+  //Generate the finished product
+  //It shows up last in webpage but we put it
+  //first here so that it can have the
+  //highlighter.
+  generateGraticule();
+  generateEquator();
+  generateXAxis();
+  generateYAxis();
+  generateStars(data);
+  
+  /*Adding in only the graticule*/
+  generateAtID("#visSpace1");
+  generateGraticule();
+  /*generate a different graticule projection*/
+  generateAtID("#visSpace1a");
+  changeProjection();
+  generateGraticule();
+  /*change projection back*/
+  changeProjectionBack();
+  
+  /*Graticule plus axies*/
+  generateAtID("#visSpace2");
+  generateGraticule();
+  generateXAxis();
+  generateYAxis();
+  /*Alternate projection*/
+  generateAtID("#visSpace2a");
+  changeProjection();
+  generateGraticule();
+  generateXAxis();
+  generateYAxis();
+  changeProjectionBack();
+  
+  /*Axis generated + equator connector*/
+  generateAtID("#visSpace3");
+  generateGraticule();
+  generateEquator();
+  generateXAxis();
+  generateYAxis();
+  /*Alternate*/
+  /*generate alternate*/
+  generateAtID("#visSpace3a");
+  changeProjection();
+  generateGraticule();
+  generateEquator();
+  generateXAxis();
+  generateYAxis();
+  changeProjectionBack();
+  
+  /*stars entered but no highlighter*/
+  generateAtID("#visSpace4");
+  generateGraticule();
+  generateEquator();
+  generateXAxis();
+  generateYAxis();
+  generateStars(data);
+  /*generate alternate*/
+  generateAtID("#visSpace4a");
+  changeProjectionScaled();
+  generateGraticule();
+  generateEquator();
+  generateXAxis();
+  generateYAxis();
+  generateStars(data);
+  changeProjectionBack();
 });
+
 
 
 /*-------------------------------------------------------------------

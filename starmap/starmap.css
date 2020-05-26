@@ -1,5 +1,14 @@
-h1 {
+h1, h2, span p {
   text-align: center;
   color: black;
   font-family: sans-serif;
+}
+
+.maps{
+  display: inline-block;
+  
+}
+
+.parents{
+  text-align: center;
 }

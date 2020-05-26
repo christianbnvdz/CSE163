@@ -8,7 +8,33 @@
     <script src="https://unpkg.com/d3-delaunay@5"></script>
   </head>
   <body>
-    <h1>Star Map</h1>
+    <h1>Star Map: Step by Step</h1>
+    <h2>Create projection and add graticule. Focus on hemisphere with northern hemisphere stars.</h2>
+    <span><p>Custom stereographic projection is made with d3.geoProjection(<i>raw projection</i>). Path generator is made from this projection using d3.geoPath(<i>projection</i>). The custom stereographic projection is shown on the left. The default stereographic projection is shown on the right. The graticules show the difference between the two projections. Notice how the custom projection is focused on the northern hemisphere.</p></span>
+    <div class="parents">
+      <div class="maps" id="visSpace1"></div>
+      <div class="maps" id="visSpace1a"></div>
+    </div>
+    <h2>Generate the X and Y axis. The X axis is the hours and the Y axis is the declination.</h2>
+    <span><p>Tick marks were added around the equator using the projection defined earlier, but there's nothing to connect them together. I guess you could leave it like that but in the original visualization it strings them together.</p></span>
+    <div class="parents">
+      <div class="maps" id="visSpace2"></div>
+      <div class="maps" id="visSpace2a"></div>
+    </div>
+    <h2>Highlight the equator, to connect the X axis.</h2>
+    <span><p>d3.geoCircle() is used to generate this circle. Radius and center are specified with longitude and latitude degrees. In this case, [0, 90]. Radius is specified as degrees out from the center. Rember: 90 degrees is looking up towards the center of the northern hemisphere.</p></span>
+    <div class="parents">
+      <div class="maps" id="visSpace3"></div>
+      <div class="maps" id="visSpace3a"></div>
+    </div>
+    <h2>Add in the stars</h2>
+    <span><p>Stars are represented as circles, their magnitudes are what determines their radius. The stars are translated to their correct positions using the same projection. A simple browser tooltip is added. The Voronoi function is used so that it's as if you're hovering over the closest star.</p></span>
+    <div class="parents">
+      <div class="maps" id="visSpace4"></div>
+      <div class="maps" id="visSpace4a"></div>
+    </div>
+    <h2>Finished Map</h2>
+    <span><p>The star map has a highlighter to help show what declination and right ascension the star has. This is done with a line and circle element.</p></span>
     <div id="visSpace"></div>
     <script src="starmap.js" charset="UTF-8"></script>
     <p><b>Christian Benavidez</b></p>
@@ -24,7 +50,7 @@
     <p><b>Spring 2020</b></p>
     <p><b>Sources:</b></p>
     <ul>
-      
+      <li><a href="https://observablehq.com/@mbostock/star-map" target="_blank">Mike Bostock's star map</a></li>
     </ul>
   </body>
 </html>
