@@ -7,7 +7,7 @@
 
 //Specify width and height for svg
 //Square svg looks better for this visualization in my opinion
-var width = 750;
+var width = 600;
 var height = width;
 
 var svg;
