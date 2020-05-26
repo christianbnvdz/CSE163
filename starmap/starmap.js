@@ -3,6 +3,7 @@
  * Adapted to run outside of observablehq.com and simplified
  *
  * Christian Benavidez
+ * Visualization at: https://christianbnvdz.github.io/CSE163/starmap/starmap.html
  */
 
 //Specify width and height for svg
