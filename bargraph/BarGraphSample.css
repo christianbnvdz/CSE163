@@ -1,0 +1,21 @@
+body{
+    background-color: #E6E6E6;
+}
+
+p{
+    text-indent: 40px;
+}
+
+/*Add .axis path and .axis line commans as described in the book */
+.axis path,
+.axis line {
+  /*.axis path and .axis line are css selectors used to style svg elements,
+    specifically those elements that make up the axis for the bar graph.
+    svg properties are different from css properties.*/
+}
+
+.axis text{
+    font: Times;
+    font-size: 12px;
+    font-weight: bold;
+}
