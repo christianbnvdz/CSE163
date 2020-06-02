@@ -51,11 +51,11 @@ d3.csv("Mexico.csv").then(function(popData){
   //Create the projection
   /*Projection focus on mexico taken from https://bl.ocks.org/mbostock/9265674 */
   var projection = d3.geoAlbers()
-                     .rotate([102, 0])
-                     .center([0, 24])
-                     .parallels([17.5, 29.5])
+                     .rotate([102, 0]) //rotate globe toward mexico
+                     .center([0, 24]) //center of mexico parallel
+                     .parallels([17.5, 29.5]) //The parallels it's squished between
                      .scale(1000)
-                     .translate([width/2, height/2]);
+                     .translate([width/2, height/2]); //center the projection
   //Create a path generator
   var pathGenerator = d3.geoPath()
                         .projection(projection);

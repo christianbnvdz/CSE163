@@ -86,9 +86,9 @@ function displayChart(data)
      .attr("class", "grid")
      .attr("transform", "translate(0, " + (height - margin.bottom) + ")")
      .call(d3.axisBottom(xScale)
-             .ticks(endYear - startYear)
-             .tickSize(0 - height)
-             .tickFormat(""));
+             .ticks(endYear - startYear) //As many ticks as there are years
+             .tickSize(0 - height) //Ticks grow up to top
+             .tickFormat("")); //Nothing
   //create y (horizontal) gridlines
   svg.append("g")
      .attr("class", "grid")
@@ -99,7 +99,7 @@ function displayChart(data)
 
   //generate the lines for each country
   var lineGen = d3.line()
-                  .curve(d3.curveBasis)
+                  .curve(d3.curveBasis) //Curve interpolater, touches start and end
                   .x(function(d) {return xScale(new Date("" + d.Year + "-1-1"));})
                   .y(function(d) {return yScale(d.BTU);});
 
@@ -121,8 +121,8 @@ function displayChart(data)
               .style("stroke", function(d){return colorScale(d.Country)});
 
   //animate line
-  paths.attr("stroke-dasharray", "1000 1000")
-       .attr("stroke-dashoffset", "1000")
+  paths.attr("stroke-dasharray", "1000 1000") /*Taken from MarkMcKay animation*/
+       .attr("stroke-dashoffset", "1000") /*The dashes left to render*/
        .transition()
        .duration(2000)
        .ease(d3.easeLinear)

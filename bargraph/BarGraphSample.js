@@ -32,6 +32,11 @@ var margin = {top: 10, right: 40, bottom: 150, left: 50},
    to move in the x direction, right, by the amount specified by the left margin,
    50px. It is also translated in the y direction, down, by 10px as specified by
    margin top. Finally, the g element selection is assigned to the svg variable.*/
+/*
+ * g hold the bars in the bar graph, so the bars are what's being specified relative
+ * to the margins.
+ */
+
 var svg = d3.select("body").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
@@ -53,6 +58,9 @@ difference between Ordinal vs Linear scale.
    function, a linear scale is created with a range from height to 0, this is so
    that the larger values are at the top and the smaller values are at the 
    bottom. The y values grow as they go towards the bottom of the html page.*/
+/* Band scale has a continuous range and a discrete domain.
+ */
+
 var xScale = d3.scaleBand().rangeRound([0, width]).padding(0.1);
 
 var yScale = d3.scaleLinear().range([height, 0]);
@@ -65,9 +73,10 @@ var yScale = d3.scaleLinear().range([height, 0]);
    It is meant to go on the left side of the visualization. The values on the yScale
    will be on the yAxis. There are 5 ticks total and the tick format is set to
    have a $ at the front of the value.*/
-var xAxis = d3.axisBottom(xScale);
+var xAxis = d3.axisBottom(xScale); //bottom oriented axis generator, ticks drawn bottom
 
 var yAxis = d3.axisLeft(yScale).ticks(5).tickFormat( function(d) { return "$" + d });
+//left oriented axis generator, ticks drawn to the left
 
 /* --------------------------------------------------------------------
 To understand how to import data. See D3 API refrence on CSV. Understand
@@ -184,8 +193,8 @@ d3.csv("GDP2020TrillionUSDollars.csv").then(function(data){
         .attr("transform", "translate(0," + height + ")")
         .call(xAxis)
         .selectAll("text")
-        .attr("dx", "-.8em")
-        .attr("dy", ".25em")
+        .attr("dx", "-.8em") //Moves the country text slightly closer to tick
+        .attr("dy", ".25em") //Aligns country text slightly closer to middle of tick
         .style("text-anchor", "end")
         .attr("font-size", "10px")
         .attr("transform", "rotate(-60)");
