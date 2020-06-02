@@ -1,125 +1,97 @@
 <!DOCTYPE html>
-<html> 
+<html>
   <head>
     <!-- Meta Tag -->
     <meta charset="utf-8">
-    <title>Final Group Project: Phase 1</title>
+    <title>Asthma and Ozone in the Air</title>
     <!-- CSS Stylesheet -->
     <link rel="stylesheet" type="text/css" href="ozone.css">
     <!-- D3.js Source -->
-    <script type= "text/javascript" src="https://d3js.org/d3.v3.min.js"></script>   
-  
-      
-
-    </head>
+    <script type="text/javascript" src="https://d3js.org/d3.v3.min.js"></script>
+    <!-- D3.js Topojson Source-->
+    <script type="text/javascript" src="https://d3js.org/topojson.v1.min.js"></script>
+    <!-- ColorBrewer Source -->
+    <script type="text/javascript" src="https://d3js.org/colorbrewer.v1.min.js"></script>
+  </head>
   <body>
-      
-    
-    <h1 style = "text-align:center; color:steelblue"><bold> Asthma and Ozone in the Air </bold></h1>
-
-    <!-- need to implement the function -->
-   
-    
-    <script src="https://d3js.org/d3.v3.min.js"></script>
-    <script type= "text/javascript" src="https://d3js.org/topojson.v1.min.js"></script>
-    <script src="https://d3js.org/colorbrewer.v1.min.js"></script>
+    <h1><b>Asthma and Ozone in the Air</b></h1>
+    <!-- Load ozone script -->
     <script type="text/javascript" src="ozone.js"></script> 
-      
-   
-     
-      
-      
-    <div id = "buttons" >
-        
-        <div class="float-right">   
+    <!-- After Loading ozone.js -->
+
+    <!-- Start of button div -->
+    <div id="buttons">
+      <div class="float-right">
         <p>AQI Standard</p>
-        <button id = "b1">2000</button> 
-        <button id = "b2">2001</button>
-        <button id = "b3">2002</button>
-        <button id = "b4">2003</button>
-        <button id = "b5">2004</button>
-        <button id = "b6">2005</button>  
-        <button id = "b7">2006</button>
-        <button id = "b8">2007</button>
-
-	  <p></p>
-        <button id = "b9">2008</button>
-        <button id = "b10">2009</button>
-        <button id = "b11">2010</button> 
-        <button id = "b12">2011</button>
-        <button id = "b13">2012</button>
-        <button id = "b14">2013</button>
-        <button id = "b15">2014</button>
-        </div>
-        
-           <div  class="float-left">
+        <button id="b1">2000</button>
+        <button id="b2">2001</button>
+        <button id="b3">2002</button>
+        <button id="b4">2003</button>
+        <button id="b5">2004</button>
+        <button id="b6">2005</button>
+        <button id="b7">2006</button>
+        <button id="b8">2007</button>
+	      <p></p>
+        <button id="b9">2008</button>
+        <button id="b10">2009</button>
+        <button id="b11">2010</button>
+        <button id="b12">2011</button>
+        <button id="b13">2012</button>
+        <button id="b14">2013</button>
+        <button id="b15">2014</button>
+      </div>
+      <div class="float-left">
         <p>American Lung Association 2014</p>
-        <button id = "b16">Adult Asthma</button>
-        <button id = "b17">Pediatric Asthma</button>
-        <button id = "b18">Chronic Obstructive Pulmonary Disease (COPD)</button>
-        </div>
-        
-    
- <script type="text/javascript">init();</script> 
-      
-   
-
-    <!-- Your code for making the maps -->
-
-
- <!--http://jsfiddle.net/sam0kqvx/24/-->     
-<!--<div id="tooltip" style="display:none;position:absolute;z-index:1001;background-color:#D8BFD8;"></div>-->
-
-<div id="tooltip" class="hidden"></div>
+        <button id="b16">Adult Asthma</button>
+        <button id="b17">Pediatric Asthma</button>
+        <button id="b18">Chronic Obstructive Pulmonary Disease (COPD)</button>
       </div>
 
-      
-      
-      
+      <!-- What does this do? -->
+      <script type="text/javascript">init();</script> 
+
+      <!-- Tooltip Definition -->
+      <div id="tooltip" class="hidden"></div>
+    </div>
+    <!-- End of button div -->
+
+
     <!-- Submission Info -->
     <div>
-        <br><br><br><br><br><br><br><br>
-
-    
-      
-    <!-- Submission Info -->
-    
+      <!-- This was added or else info would float between the AQI and COPD buttons-->
+      <br><br><br><br><br><br><br><br>
+      <!-- Member and Class Info -->
       <h4>Members: Joanne Chan and Sabina Tomkins</h4>
-    
       <p>CMPS 165 - Data Programming for Visualization</p>
       <p>Suresh K. Lodha</p>
       <p>Winter 2015</p>
-      
 
-      
-    <!-- Create a list using <ul> and <li> tag -->   
-    <h4>Files</h4>
-    
-    <ul>
-      <li>index.html</li>
-      <li>ozone.css</li>
-      <li>ozone.js</li>
-      <li>ozone.json</li>
-      <li>ca-counties.json</li>
-    </ul>
-      
-    <h4> Data Sources:</h4>
-        <ul>   
-            <li><a href = "https://www.airnow.gov/index.cfm?action=pubs.aqiguideozone">EPA Ozone Air Quality</a></li>
-            <li><a href = "https://www.lung.org/finding-cures/our-research/trend-reports/estimated-prevalence.pdf">American Lung Association - Estimated Prevalence and Incidence of Lung Disease 2014</a></li>
+      <!-- Included File List -->   
+      <h4>Files</h4>
+      <ul>
+        <li>index.html</li>
+        <li>ozone.css</li>
+        <li>ozone.js</li>
+        <li>ozone.json</li>
+        <li>ca-counties.json</li>
+      </ul>
 
-        </ul>
-        
-    <h4>Code Sources</h4>
-        <ul>
-            <li><a href = "https://colorbrewer2.org/"> Colorbrewer</a></li>
-            <li>The County json files were taken from this <a href="https://shancarter.github.io/ucb-dataviz-fall-2013/classes/interactive-maps/">site</a>.</li>
-      
-        </ul>
+      <!-- Data Sources List --> 
+      <h4> Data Sources:</h4>
+      <ul>   
+        <li><a href="https://www.airnow.gov/index.cfm?action=pubs.aqiguideozone">EPA Ozone Air Quality</a></li>
+        <li><a href="https://www.lung.org/finding-cures/our-research/trend-reports/estimated-prevalence.pdf">American Lung Association - Estimated Prevalence and Incidence of Lung Disease 2014</a></li>
+      </ul>
 
+      <!-- Code Sources List-->
+      <h4>Code Sources</h4>
+      <ul>
+        <li><a href="https://colorbrewer2.org/"> Colorbrewer</a></li>
+        <li>The County json files were taken from this <a href="https://shancarter.github.io/ucb-dataviz-fall-2013/classes/interactive-maps/">site</a>.</li>
+      </ul>
 
-        
- 
-      </div> 
+    </div> 
+    <!-- End of Submission Info-->
+
   </body>
 </html>
