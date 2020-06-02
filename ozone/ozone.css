@@ -1,0 +1,101 @@
+/*all CSS below taken from http://bl.ocks.org/mbostock/5562380*/
+
+svg {
+  font: 10px sans-serif;
+}
+/*http://stackoverflow.com/questions/3898329/creating-two-div-right-next-to-each-other-on-css*/
+.float-left
+{
+  float: left;
+}
+
+.float-right
+{
+  float: right;
+}
+.wrapper
+{
+  width: 500px;
+}
+
+#container {
+/*    display: inline-block;*/
+    position: relative;
+    width: 100%;
+}
+ #vis {
+    margin: 0 auto;
+    max-width: 960px;
+    width: 100%;
+}
+#vis div {
+    float: left;
+    position: relative;
+}   
+
+#container right {
+    position: absolute;
+    right: 0px;
+    max-width: 35%;
+}
+
+#container left {
+    position: absolute;
+    left: 0px;
+    max-width: 35%;
+}
+
+#section {
+    width:350px;
+    float:left;
+    padding:10px; 
+}
+#button{
+ float:left;   
+}
+.caption {
+  font-weight: bold;
+}
+
+.key path {
+  display: none;
+}
+
+.key line {
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.county-border {
+  fill: none;
+  stroke: #000;
+  stroke-opacity: .3;
+}
+/*From the textbook: http://chimera.labs.oreilly.com/books/1230000000345/ch10.html#_html_div_tooltips*/
+#tooltip {
+        position: absolute;
+        width: 100px;
+        height: auto;
+        padding: 10px;
+        background-color: #D8BFD8;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+        -webkit-box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4);
+        -moz-box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4);
+        box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.4);
+        pointer-events: none;
+}
+
+#tooltip.hidden {
+        display: none;
+}
+
+#tooltip p {
+        margin: 0;
+        font-family: sans-serif;
+        font-size: 16px;
+        line-height: 20px;
+}
+
+

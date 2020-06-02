@@ -1,0 +1,24 @@
+\documentclass{article}[11pt]
+
+\usepackage{hyperref}
+
+\begin{document}
+\title{Enhancement Project Proposal}
+\author{Christian Benavidez}
+\date{}
+\maketitle
+
+\textbf{Selected Visualization:} \href{https://sureshlodha.github.io/CMPS165_Winter15_FinalProjects/OzoneInTheAir/}{Asthma and the Ozone}\\
+
+Firstly, this visualization is in V3, I plan to bring it up to V5. The biggest weakness this visualization has is that
+it runs slowly after pressing buttons a few times. Every time a button is pressed, the paths that were generated
+aren't updated, they are instead ignored and new paths are generated on top of the old ones. This means that
+there are more and more path elements after each button press. This causes the visualization to be slow. If 
+someone were to use it, they'd have to refresh the page after around 6 or 7 button presses. I plan on fixing this
+as well. There's also some AQI data missing in this visualization. So I plan on gathering that from this website I 
+found that does have \href{https://www.epa.gov/outdoor-air-quality-data/air-quality-index-report}{it}. I also plan on 
+updating it to include years 2000 to 2019. I will remove the buttons and replace it with a slider to select the year.
+This last change is only cosmetic. If also plan on getting data for COPD for all years 2000-2018, not just 2014 as
+this visualization does.
+
+\end{document}
