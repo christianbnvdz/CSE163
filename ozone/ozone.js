@@ -16,6 +16,8 @@ var margin = {top: 20, right: 20, bottom: 20, left: 20};
   width = 1000 - margin.left - margin.right,
   height = 475 - margin.top - margin.bottom;
 
+//Give svg height and width, note that svg actually
+//Refers to a g element
 var svg = d3.select("body")
    .append("svg")
    .attr("width", width + margin.left + margin.right)
@@ -66,110 +68,59 @@ function health(adult) {
       return ((co[d]['LungCancer']/co[d]["Population"])*100);    
     }     
 
-    if(adult=="Adult") {    
-      d3.json("ca-counties.json").then(function(ca) {
-    
-        var counties = topojson.feature(ca, ca.objects.counties);
-  
-        //Taken from: http://shancarter.github.io/ucb-dataviz-fall-2013/classes/interactive-maps/
-        svg.selectAll(".county")
-           .data(counties.features)
-           .enter().append("path")
-           .attr("class", "county-border")
-           .attr("d", path2)
-           //http://jsfiddle.net/sam0kqvx/24/ and  http://chimera.labs.oreilly.com/books/1230000000345/ch10.html#_html_div_tooltips
-           .on("mouseover", function(d) {
-             current_position = d3.mouse(this)
-             //Update the tooltip position and value
+    d3.json("ca-counties.json").then(function(ca) {
+      var counties = topojson.feature(ca, ca.objects.counties);
+
+      //Taken from: http://shancarter.github.io/ucb-dataviz-fall-2013/classes/interactive-maps/
+      svg.selectAll(".county")
+         .data(counties.features)
+         .enter()
+         .append("path")
+         .attr("class", "county-border")
+         .attr("d", path2)
+         //http://jsfiddle.net/sam0kqvx/24/ and  http://chimera.labs.oreilly.com/books/1230000000345/ch10.html#_html_div_tooltips
+         .on("mouseover", function(d){
+           var current_position = d3.mouse(this);
+           //Update the tooltip position and value
+           d3.select("#tooltip")
+             .style("left", current_position[0] + "px")
+             .style("top", current_position[1] + "px");
+
+           if (adult == "Adult"){
              d3.select("#tooltip")
-               .style("left", current_position[0] + "px")
-               .style("top", current_position[1] +"px")
-               .html("%Adults with Asthma " + getCountyAdult(d.properties.name).toFixed(2))
-               .select("#value");
-             //Show the tooltip
-             d3.select("#tooltip").classed("hidden", false);
-           })
-           .on("mouseout", function() {
-             //Hide the tooltip
-             d3.select("#tooltip").classed("hidden", true);
-           })
-           .transition()
-           .delay(50)
-           .duration(500)
-           .style("fill", function(d) { return asthma_colors(getCountyAdult(d.properties.name)); });
-      });
-    } else if(adult=="child") {
-      d3.json("ca-counties.json").then(function(ca) {
-    
-        var counties = topojson.feature(ca, ca.objects.counties);
-  
-        //Taken from: http://shancarter.github.io/ucb-dataviz-fall-2013/classes/interactive-maps/
-        svg.selectAll(".county")
-           .data(counties.features)
-           .enter().append("path")
-           .attr("class", "county-border")
-           .attr("d", path2)
-        //http://jsfiddle.net/sam0kqvx/24/ and  http://chimera.labs.oreilly.com/books/1230000000345/ch10.html#_html_div_tooltips
-           .on("mouseover", function(d) {
-             current_position = d3.mouse(this)
-             //Update the tooltip position and value
+               .html("%Adults with Asthma " + getCountyAdult(d.properties.name).toFixed(2));
+           } else if (adult == "child") {
              d3.select("#tooltip")
-               .style("left", current_position[0] + "px")
-               .style("top", current_position[1] +"px")
-               .html("%Pedriatic Asthma Cases " + getCountyPed(d.properties.name).toFixed(2))
-               .select("#value");
-             //Show the tooltip
-             d3.select("#tooltip").classed("hidden", false);
-           })
-           .on("mouseout", function() {
-             //Hide the tooltip
-             d3.select("#tooltip").classed("hidden", true);
-           })
-           .transition()
-           .delay(50)
-           .duration(500)
-           .style("fill", function(d) { return asthma_colors(getCountyPed(d.properties.name)); });
-      });
-    } else {
-      d3.json("ca-counties.json").then(function(ca) {
-   
-        var counties = topojson.feature(ca, ca.objects.counties);
-   
-        //Taken from: http://shancarter.github.io/ucb-dataviz-fall-2013/classes/interactive-maps/
-        svg.selectAll(".county")
-           .data(counties.features)
-           .enter().append("path")
-           .attr("class", "county-border")
-           .attr("d", path2)
-           //http://jsfiddle.net/sam0kqvx/24/ and  http://chimera.labs.oreilly.com/books/1230000000345/ch10.html#_html_div_tooltips
-           .on("mouseover", function(d) {
-             current_position = d3.mouse(this)
-             //Update the tooltip position and value
+               .html("%Pedriatic Asthma Cases " + getCountyPed(d.properties.name).toFixed(2));
+           } else {
              d3.select("#tooltip")
-               .style("left", current_position[0] + "px")
-               .style("top", current_position[1] +"px")
-               .html(d.properties.name + "<br><br>% Cases of COPD " + getCountyLC(d.properties.name).toFixed(2))
-               .select("#value");
-             //Show the tooltip
-             d3.select("#tooltip").classed("hidden", false);
-           })
-           .on("mouseout", function() {
-             //Hide the tooltip
-             d3.select("#tooltip").classed("hidden", true);
-           })
-           .transition()
-           .delay(50)
-           .duration(500)
-           .style("fill", function(d) { return asthma_colors(getCountyLC(d.properties.name)); });
-      });
-    }   
+               .html(d.properties.name + "<br><br>% Cases of COPD " + getCountyLC(d.properties.name).toFixed(2));
+           }
+           //Show the tooltip
+           d3.select("#tooltip").classed("hidden", false);
+         })
+         .on("mouseout", function() {
+           //Hide the tooltip
+           d3.select("#tooltip").classed("hidden", true);
+         })
+         .transition()
+         .delay(50)
+         .duration(500)
+         .style("fill", function(d){
+           if (adult == "Adult") {
+             return asthma_colors(getCountyAdult(d.properties.name));
+           } else if (adult == "child") {
+             return asthma_colors(getCountyPed(d.properties.name));
+           } else {
+             return asthma_colors(getCountyLC(d.properties.name));
+           }
+         });
+    });  
   });
 }
     
 
-/*--------------------------------------
- *  importing the data for ozone levels
- *-------------------------------------*/
+//Draws the AQI map
 function map(year){
   var id = "California_2011_Ozone.json";
   var start = "California_";
@@ -179,8 +130,6 @@ function map(year){
   var file = start.concat(year);
   file = file.concat(end);
   id = file; 
-
-  console.log(id);
 
   d3.json(id).then(function(co){
     
@@ -194,8 +143,6 @@ function map(year){
     d3.json("ca-counties.json").then(function(ca) {
     
       var counties = topojson.feature(ca, ca.objects.counties);
-
-      console.log(counties.features);
 
      //Taken from: http://shancarter.github.io/ucb-dataviz-fall-2013/classes/interactive-maps/
       svg.selectAll(".county")
