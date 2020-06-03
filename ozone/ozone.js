@@ -71,12 +71,15 @@ function health(adult) {
     d3.json("ca-counties.json").then(function(ca) {
       var counties = topojson.feature(ca, ca.objects.counties);
 
+      //Remove all asthma state elements to not clutter the svg
+      svg.selectAll(".asthma-states").remove();
       //Taken from: http://shancarter.github.io/ucb-dataviz-fall-2013/classes/interactive-maps/
       svg.selectAll(".county")
          .data(counties.features)
          .enter()
          .append("path")
          .attr("class", "county-border")
+         .classed("asthma-states", true)
          .attr("d", path2)
          //http://jsfiddle.net/sam0kqvx/24/ and  http://chimera.labs.oreilly.com/books/1230000000345/ch10.html#_html_div_tooltips
          .on("mouseover", function(d){
@@ -103,9 +106,9 @@ function health(adult) {
            //Hide the tooltip
            d3.select("#tooltip").classed("hidden", true);
          })
+         .style("fill", "black")
          .transition()
-         .delay(50)
-         .duration(500)
+         .duration(300)
          .style("fill", function(d){
            if (adult == "Adult") {
              return asthma_colors(getCountyAdult(d.properties.name));
@@ -144,11 +147,14 @@ function map(year){
     
       var counties = topojson.feature(ca, ca.objects.counties);
 
-     //Taken from: http://shancarter.github.io/ucb-dataviz-fall-2013/classes/interactive-maps/
+      //Remove all AQI states so as to not clutter the svg
+      svg.selectAll(".aqi-states").remove();
+      //Taken from: http://shancarter.github.io/ucb-dataviz-fall-2013/classes/interactive-maps/
       svg.selectAll(".county")
          .data(counties.features)
          .enter().append("path")
          .attr("class", "county-border")
+         .classed("aqi-states", true)
          .attr("d", path)
          //http://jsfiddle.net/sam0kqvx/24/ and  http://chimera.labs.oreilly.com/books/1230000000345/ch10.html#_html_div_tooltips
          .on("mouseover", function(d) {
@@ -166,9 +172,9 @@ function map(year){
            //Hide the tooltip
            d3.select("#tooltip").classed("hidden", true);
          })
+         .style("fill", "black")
          .transition()
-         .delay(50)
-         .duration(500)
+         .duration(300)
          .style("fill", function(d) { return color2(getCountyOzone(d.properties.name)); })
     });
   });
