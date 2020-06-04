@@ -12,13 +12,13 @@
  */
 
 //Taken from previous assignments
-var margin = {top: 20, right: 20, bottom: 20, left: 100};
+var margin = {top: 20, right: 20, bottom: 20, left: 0};
   width = 1000 - margin.left - margin.right,
   height = 475 - margin.top - margin.bottom;
 
 //Give svg height and width, note that svg actually
 //Refers to a g element
-var svg = d3.select("body")
+var svg = d3.select("#visSpace")
    .append("svg")
    .attr("width", width + margin.left + margin.right)
    .attr("height", height + margin.top + margin.bottom)
@@ -27,14 +27,14 @@ var svg = d3.select("body")
 
 //Taken from: http://shancarter.github.io/ucb-dataviz-fall-2013/classes/interactive-maps/
 var projection = d3.geoAlbers()
-   .translate([width/1.75, height / 3])
+   .translate([7 * width/10, height / 3])
    .parallels([60, 50])
    .rotate([120, 0])
    .scale(2500);
 
 //Taken from: http://shancarter.github.io/ucb-dataviz-fall-2013/classes/interactive-maps/
 var projection2 = d3.geoAlbers()
-   .translate([width/4, height/3])
+   .translate([2.65 * width/10, height/3])
    .parallels([60, 50])
    .rotate([120, 0])
    .scale(2500);
@@ -192,7 +192,7 @@ function map(year){
 //Draws the legends and loads COPD and 2011 AQI map by default.
 //Also adds in event handlers for buttons.
 function init(){
-  //AQI legend circles
+/*  //AQI legend circles
   svg.append("rect")
      .attr("x", width-120)
      .attr("y", height-210)
@@ -272,6 +272,15 @@ function init(){
      .attr("height", 200)
      .attr("fill", "#D8BFD8")
      .style("stroke-size", "1px");
+
+  svg.append("rect")
+     .attr("x", width-140)
+     .attr("y", height-450)
+     .attr("width", 20)
+     .attr("height", 165)
+     .attr("fill", "black")
+     .style("stroke-size", "1px");
+
   //Asthma legend circles
   svg.append("circle")
      .attr("r", 10)
@@ -348,7 +357,7 @@ function init(){
      .style("fill", "purple") 
      .attr("font-size", "10px")
      .text("Reported Cases per 100 People");
- 
+*/ 
   //Generate default map to COPD and 2011 AQI
   map("2019");
   health("lungs");

@@ -9,6 +9,11 @@ svg {
   font: 10px sans-serif;
 }
 
+#visSpace {
+  text-align: center; 
+  width: auto;
+}
+
 /* Input div */
 #inputs {
   margin: auto;
@@ -24,7 +29,7 @@ svg {
 #aqi-inputs, #asthma-inputs {
   display: inline-block;
   vertical-align: top;
-  margin: 0px 10px 0px 10px;
+  margin: 0px 100px 0px 100px;
   text-align: center;
 }
 
