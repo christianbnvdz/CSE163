@@ -12,7 +12,7 @@
  */
 
 //Taken from previous assignments
-var margin = {top: 20, right: 20, bottom: 20, left: 20};
+var margin = {top: 20, right: 20, bottom: 20, left: 100};
   width = 1000 - margin.left - margin.right,
   height = 475 - margin.top - margin.bottom;
 
@@ -346,86 +346,20 @@ function init(){
   map("2011");
   health("lungs");
 
-  //Event handlers for buttons
-  d3.select("#b1")
-        .on("click", function(d,i) {
-        console.log("b1");
-            map("2000");
+  //Event handler for slider
+  d3.select("#aqi-slider")
+    .on("mousedown", function() {
+      d3.select(this)
+        .on("mousemove", function() {
+          d3.select("#aqi-selected-year")
+            .html("Year: " + this.value);
         });
-    d3.select("#b2")
-        .on("click", function(d,i) {
-        console.log("b2");
-            map("2001");
-        });  
-    
-     d3.select("#b3")
-        .on("click", function(d,i) {
-        console.log("b3");
-            map("2002");
-        });
-        d3.select("#b4")
-        .on("click", function(d,i) {
-        console.log("b4");
-            map("2003");
-        });
-         d3.select("#b5")
-        .on("click", function(d,i) {
-        console.log("b5");
-            map("2004");
-        });
-     d3.select("#b6")
-        .on("click",  function(d,i) {
-        console.log("b6");
-            map("2005");
-        });
-    d3.select("#b7")
-        .on("click", function(d,i) {
-        console.log("b7");
-            map("2006");
-        });  
-    
-     d3.select("#b8")
-        .on("click", function(d,i) {
-        console.log("b8");
-            map("2007");
-        });
-        d3.select("#b9")
-        .on("click", function(d,i) {
-        console.log("b9");
-            map("2008");
-        });
-         d3.select("#b10")
-        .on("click", function(d,i) {
-        console.log("b10");
-            map("2009");
-        });
-     d3.select("#b11")
-        .on("click", function(d,i) {
-        console.log("b11");
-            map("2010");
-        });
-    d3.select("#b12")
-        .on("click", function(d,i) {
-        console.log("b12");
-            map("2011");
-        });  
-    
-     d3.select("#b13")
-        .on("click", function(d,i) {
-        console.log("b13");
-            map("2012");
-        });
-        d3.select("#b14")
-        .on("click", function(d,i) {
-        console.log("b14");
-            map("2013");
-        });
-         d3.select("#b15")
-        .on("click", function(d,i) {
-        console.log("b15");
-            map("2014");
-        });
-     //for State of the Air from American Lung Association
+    })
+    .on("mouseup", function() {
+      map("" + this.value);
+    });
+ 
+    //for State of the Air from American Lung Association
     d3.select("#b16")
         .on("click", function(d,i) {
         console.log("b16");
