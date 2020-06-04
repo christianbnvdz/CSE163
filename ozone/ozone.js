@@ -189,176 +189,60 @@ function map(year){
   });
 }
 
-//Draws the legends and loads COPD and 2011 AQI map by default.
-//Also adds in event handlers for buttons.
+//Draws the legends and loads COPD and 2019 AQI map by default.
+//Also adds in event handlers for buttons and slider.
 function init(){
-/*  //AQI legend circles
-  svg.append("rect")
-     .attr("x", width-120)
-     .attr("y", height-210)
-     .attr("width", 160)
-     .attr("height", 180)
-     .attr("fill", "#D8BFD8")
-     .style("stroke-size", "1px");
+  //Legend for Asthma
+  var gAsthma = svg.append("g");
+  var asthPoint = {x: width / 3 - 30, y: 25};
+  var asthDim = {w: 200, h: 100};
+  //Make grouping rect
+  gAsthma.append("rect")
+     .attr("x", asthPoint.x)
+     .attr("y", asthPoint.y)
+     .attr("width", asthDim.w)
+     .attr("height", asthDim.h)
+     .style("fill", "none");
+  //Make asthma legend label
+  gAsthma.append("text")
+     .text("Reported Cases per 100 People")
+     .attr("x", asthPoint.x + 100)
+     .attr("y", asthPoint.y - 7)
+     .attr("text-anchor", "middle")
+     .style("font-size", "14px")
+     .style("fill", "purple");
+  //Make color container rect
+  gAsthma.append("rect")
+     .attr("x", asthPoint.x)
+     .attr("y", asthPoint.y)
+     .attr("width", asthDim.w / 5 + 6)
+     .attr("height", asthDim.h + 6)
+     .style("fill", "black");
+  //Make rect for each one in the athma color range blotches
+  ["#980043", "#dd1c77", "#df65b0", "#d7b5d8", "#f1eef6"].forEach(
+    function(color, i){
+      gAsthma.append("rect")
+         .attr("x", asthPoint.x + 3)
+         .attr("y", asthPoint.y + 3 + (i * (asthDim.h/5)))
+         .attr("width", asthDim.w / 5)
+         .attr("height", asthDim.h / 5)
+         .style("fill", color);
+    });
+  //Make a label for each of the asthma colors
+  ["> 9", "7 - 8.99", "5 - 6.99", "3 - 4.99", "1 - 2.99"].forEach(
+    function(label, i){
+      gAsthma.append("text")
+        .text(label)
+        .attr("text-anchor", "start")
+        .attr("x", asthPoint.x + 60)
+        .attr("y", asthPoint.y + 15 + (i * (asthDim.h/5 + 1)))
+        .style("fill", "black")
+        .style("font-size", "12px");
+    });
 
-  svg.append("circle")
-     .attr("r", 10)
-     .attr("cx", width-100)
-     .attr("cy", height-180)
-     .style("fill", "#de2d26");
-    
-  svg.append("circle")
-     .attr("r", 10)
-     .attr("cx", width-100)
-     .attr("cy", height-150)
-     .style("fill", "#fc9272");
-    
-  svg.append("circle")
-     .attr("r", 10)
-     .attr("cx", width-100)
-     .attr("cy", height-120)
-     .style("fill", "#fee0d2");
+  //Legend for AQI
 
-  svg.append("circle")
-     .attr("r", 10)
-     .attr("cx", width-100)
-     .attr("cy", height-90)
-     .style("fill", "white");
-
-  //AQI legend text
-  svg.append("text")
-     .attr("class", "label")
-     .attr("x", width -85)
-     .attr("y", height-180)
-     .style("text-anchor", "start")
-     .text("Hazardous (101+)");
-
-  svg.append("text")
-     .attr("class", "label")
-     .attr("x", width -85)
-     .attr("y", height-150)
-     .style("text-anchor", "start")
-     .text("Moderate (51-100)");
-    
-  svg.append("text")
-     .attr("class", "label")
-     .attr("x", width -85)
-     .attr("y", height-120)
-     .style("text-anchor", "start")
-     .text("Healthy (1-50)");
-
-  svg.append("text")
-     .attr("class", "label")
-     .attr("x", width -85)
-     .attr("y", height-90)
-     .style("text-anchor", "start")
-     .text("Data not available");
-        
-  //AQI legend label
-  svg.append("text")
-     .attr("class", "label")
-     .attr("x", width -52)
-     .attr("y", height-40)
-     .style("text-anchor", "middle")
-     .style("fill", "purple") 
-     .attr("font-size", "12px")
-     .text("Ozone Air Quality Index");   
- 
-  //Asthma Legend rect   
-  svg.append("rect")
-     .attr("x", width-160)
-     .attr("y", height-450)
-     .attr("width", 180)
-     .attr("height", 200)
-     .attr("fill", "#D8BFD8")
-     .style("stroke-size", "1px");
-
-  svg.append("rect")
-     .attr("x", width-140)
-     .attr("y", height-450)
-     .attr("width", 20)
-     .attr("height", 165)
-     .attr("fill", "black")
-     .style("stroke-size", "1px");
-
-  //Asthma legend circles
-  svg.append("circle")
-     .attr("r", 10)
-     .attr("cx", width-130)
-     .attr("cy", height-435)
-     .style("fill", "#980043");
-    
-  svg.append("circle")
-     .attr("r", 9)
-     .attr("cx", width-130)
-     .attr("cy", height-400)
-     .style("fill", "#dd1c77");
-    
-  svg.append("circle")
-     .attr("r", 9)
-     .attr("cx", width-130)
-     .attr("cy", height-365)
-     .style("fill", "#df65b0");
-
-  svg.append("circle")
-     .attr("r", 9)
-     .attr("cx", width-130)
-     .attr("cy", height-335)
-     .style("fill", "#d7b5d8");
-    
-  svg.append("circle")
-     .attr("r", 9)
-     .attr("cx", width-130)
-     .attr("cy", height-300)
-     .style("fill", "#f1eef6");
-
-  //Asthma legend text
-  svg.append("text")
-     .attr("class", "label")
-     .attr("x", width -115)
-     .attr("y", height-435)
-     .style("text-anchor", "start")
-     .text(" > 9.00");
-
-  svg.append("text")
-     .attr("class", "label")
-     .attr("x", width -115)
-     .attr("y", height-400)
-     .style("text-anchor", "start")
-     .text("7.00 - 8.99");
-    
-  svg.append("text")
-     .attr("class", "label")
-     .attr("x", width -115)
-     .attr("y", height-365)
-     .style("text-anchor", "start")
-     .text("5.00 - 6.99");
-
-  svg.append("text")
-     .attr("class", "label")
-     .attr("x", width -115)
-     .attr("y", height-335)
-     .style("text-anchor", "start")
-     .text("3.00 - 4.99");
-    
-  svg.append("text")
-     .attr("class", "label")
-     .attr("x", width -115)
-     .attr("y", height-300)
-     .style("text-anchor", "start")
-     .text("1.00 - 2.99");
-        
-  //Asthma legend label
-  svg.append("text")
-     .attr("class", "label")
-     .attr("x", width -75)
-     .attr("y", height-265)
-     .style("text-anchor", "middle")
-     .style("fill", "purple") 
-     .attr("font-size", "10px")
-     .text("Reported Cases per 100 People");
-*/ 
-  //Generate default map to COPD and 2011 AQI
+  //Generate default map to COPD and 2019 AQI
   map("2019");
   health("lungs");
 
