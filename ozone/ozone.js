@@ -41,7 +41,7 @@ var projection2 = d3.geoAlbers()
 
 // resource: Overstack: Question on Colorbrewer
 var color2 = d3.scaleThreshold()
-   .domain([0, 49.4, 99.4, 100])
+   .domain([1, 49.4, 99.4, 100])
    //Colors taken from Colorbrewer: https://colorbrewer2.org/#type=sequential&scheme=PuRd&n=5
    .range(["#FFFFFF", "#fee0d2", "#fc9272", "#de2d26"]);
 
@@ -134,12 +134,15 @@ function map(year){
   file = file.concat(end);
   id = file; 
 
-  d3.json(id).then(function(co){
-    
-    var ozone = [];     
+  d3.csv("aqi.csv").then(function(co){
+     
     console.log(co);  
-    function getCountyOzone(d){
-        return co[d];    
+    function getCountyOzone(county, year){
+        for (var i = 0; i < co.length; ++i) {
+          if (co[i].County == county) {
+            return co[i][year];
+          }
+        }
     }
 
     //Taken from http://bl.ocks.org/mbostock/5562380
@@ -159,11 +162,16 @@ function map(year){
          //http://jsfiddle.net/sam0kqvx/24/ and  http://chimera.labs.oreilly.com/books/1230000000345/ch10.html#_html_div_tooltips
          .on("mouseover", function(d) {
            current_position = d3.mouse(this)
+           //Get AQI string
+           var AQI = Math.round(getCountyOzone(d.properties.name, year));
+           if (AQI == 0) {
+             AQI = "unavailable";
+           }
            //Update the tooltip position and value
            d3.select("#tooltip")
              .style("left", current_position[0] + "px")
              .style("top", current_position[1] +"px")
-             .html(d.properties.name + "<br><br>AQI: " + Math.round(getCountyOzone(d.properties.name)) )
+             .html(d.properties.name + "<br><br>AQI: " + AQI )
              .select("#value");
            //Show the tooltip
            d3.select("#tooltip").classed("hidden", false);
@@ -176,7 +184,7 @@ function map(year){
          .transition()
          .duration(300)
          .style("fill", function(d) {
-           return color2(getCountyOzone(d.properties.name)); 
+           return color2(getCountyOzone(d.properties.name, year)); 
          })
     });
   });
@@ -343,7 +351,7 @@ function init(){
      .text("Reported Cases per 100 People");
  
   //Generate default map to COPD and 2011 AQI
-  map("2011");
+  map("2019");
   health("lungs");
 
   //Event handler for slider
