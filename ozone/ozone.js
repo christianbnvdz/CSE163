@@ -41,7 +41,7 @@ var projection2 = d3.geoAlbers()
 
 // resource: Overstack: Question on Colorbrewer
 var color2 = d3.scaleThreshold()
-   .domain([1, 49.4, 99.4, 100])
+   .domain([1, 50.4, 100.4, 100])
    //Colors taken from Colorbrewer: https://colorbrewer2.org/#type=sequential&scheme=PuRd&n=5
    .range(["#FFFFFF", "#fee0d2", "#fc9272", "#de2d26"]);
 
@@ -53,9 +53,17 @@ var asthma_colors = d3.scaleThreshold()
 var path = d3.geoPath().projection(projection);
 var path2 = d3.geoPath().projection(projection2);
 
+//Load in county geojson
+var countyGeometry = d3.json("ca-counties.json");
+//Load in aqi csv
+var aqiData = d3.csv("aqi.csv");
+//Load in health data
+var healthData = d3.json("county_health_data.json");
+
+
 //Draws the asthma map
 function health(adult) {
-  d3.json("county_health_data.json").then(function(co) {
+  healthData.then(function(co) {
      
     console.log(co);  
     function getCountyAdult(d) {
@@ -68,7 +76,7 @@ function health(adult) {
       return ((co[d]['LungCancer']/co[d]["Population"])*100);    
     }     
 
-    d3.json("ca-counties.json").then(function(ca) {
+    countyGeometry.then(function(ca) {
       var counties = topojson.feature(ca, ca.objects.counties);
 
       //Remove all asthma state elements to not clutter the svg
@@ -91,10 +99,10 @@ function health(adult) {
 
            if (adult == "Adult"){
              d3.select("#tooltip")
-               .html("%Adults with Asthma " + getCountyAdult(d.properties.name).toFixed(2));
+               .html(d.properties.name + "<br><br>%Adults with Asthma " + getCountyAdult(d.properties.name).toFixed(2));
            } else if (adult == "child") {
              d3.select("#tooltip")
-               .html("%Pedriatic Asthma Cases " + getCountyPed(d.properties.name).toFixed(2));
+               .html(d.properties.name + "<br><br>%Pedriatic Asthma Cases " + getCountyPed(d.properties.name).toFixed(2));
            } else {
              d3.select("#tooltip")
                .html(d.properties.name + "<br><br>% Cases of COPD " + getCountyLC(d.properties.name).toFixed(2));
@@ -121,32 +129,23 @@ function health(adult) {
     });  
   });
 }
-    
+   
 
 //Draws the AQI map
 function map(year){
-  var id = "California_2011_Ozone.json";
-  var start = "California_";
-    
-  var end = "_Ozone.json";
-    
-  var file = start.concat(year);
-  file = file.concat(end);
-  id = file; 
-
-  d3.csv("aqi.csv").then(function(co){
-     
+  aqiData.then(function(co){
+    console.log("AQI data:");
     console.log(co);  
     function getCountyOzone(county, year){
-        for (var i = 0; i < co.length; ++i) {
-          if (co[i].County == county) {
-            return co[i][year];
-          }
+      for (var i = 0; i < co.length; ++i) {
+        if (co[i].County == county) {
+          return co[i][year];
         }
+      }
     }
 
     //Taken from http://bl.ocks.org/mbostock/5562380
-    d3.json("ca-counties.json").then(function(ca) {
+    countyGeometry.then(function(ca) {
     
       var counties = topojson.feature(ca, ca.objects.counties);
 
@@ -171,7 +170,7 @@ function map(year){
            d3.select("#tooltip")
              .style("left", current_position[0] + "px")
              .style("top", current_position[1] +"px")
-             .html(d.properties.name + "<br><br>AQI: " + AQI )
+             .html(d.properties.name + "<br><br>Median AQI: " + AQI )
              .select("#value");
            //Show the tooltip
            d3.select("#tooltip").classed("hidden", false);
@@ -232,21 +231,21 @@ function init(){
      .attr("x", width -85)
      .attr("y", height-180)
      .style("text-anchor", "start")
-     .text("Hazardous (100+)");
+     .text("Hazardous (101+)");
 
   svg.append("text")
      .attr("class", "label")
      .attr("x", width -85)
      .attr("y", height-150)
      .style("text-anchor", "start")
-     .text("Moderate (50-99)");
+     .text("Moderate (51-100)");
     
   svg.append("text")
      .attr("class", "label")
      .attr("x", width -85)
      .attr("y", height-120)
      .style("text-anchor", "start")
-     .text("Healthy (1-49)");
+     .text("Healthy (1-50)");
 
   svg.append("text")
      .attr("class", "label")
@@ -265,7 +264,7 @@ function init(){
      .attr("font-size", "12px")
      .text("Ozone Air Quality Index");   
  
-  //Asthma Legend circles   
+  //Asthma Legend rect   
   svg.append("rect")
      .attr("x", width-160)
      .attr("y", height-450)
@@ -273,7 +272,7 @@ function init(){
      .attr("height", 200)
      .attr("fill", "#D8BFD8")
      .style("stroke-size", "1px");
-
+  //Asthma legend circles
   svg.append("circle")
      .attr("r", 10)
      .attr("cx", width-130)
