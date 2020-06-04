@@ -41,12 +41,12 @@ var projection2 = d3.geoAlbers()
 
 // resource: Overstack: Question on Colorbrewer
 var color2 = d3.scaleThreshold()
-   .domain([0, 50, 100, 101])
+   .domain([0, 49.4, 99.4, 100])
    //Colors taken from Colorbrewer: https://colorbrewer2.org/#type=sequential&scheme=PuRd&n=5
    .range(["#FFFFFF", "#fee0d2", "#fc9272", "#de2d26"]);
 
 var asthma_colors = d3.scaleThreshold()
-   .domain([0, 3, 5, 7, 9, 10])
+   .domain([0, 2.994, 4.994, 6.994, 8.994, 10])
    //Colors taken from Colorbrewer: https://colorbrewer2.org/#type=sequential&scheme=PuRd&n=5
    .range(["#FFFFFF", "#f1eef6", "#d7b5d8", "#df65b0", "#dd1c77", "#980043"]);
 
@@ -163,7 +163,7 @@ function map(year){
            d3.select("#tooltip")
              .style("left", current_position[0] + "px")
              .style("top", current_position[1] +"px")
-             .html(d.properties.name + "<br><br>AQI: " + getCountyOzone(d.properties.name).toFixed(2) )
+             .html(d.properties.name + "<br><br>AQI: " + Math.round(getCountyOzone(d.properties.name)) )
              .select("#value");
            //Show the tooltip
            d3.select("#tooltip").classed("hidden", false);
@@ -175,7 +175,9 @@ function map(year){
          .style("fill", "black")
          .transition()
          .duration(300)
-         .style("fill", function(d) { return color2(getCountyOzone(d.properties.name)); })
+         .style("fill", function(d) {
+           return color2(getCountyOzone(d.properties.name)); 
+         })
     });
   });
 }
@@ -229,14 +231,14 @@ function init(){
      .attr("x", width -85)
      .attr("y", height-150)
      .style("text-anchor", "start")
-     .text("Moderate (50-100)");
+     .text("Moderate (50-99)");
     
   svg.append("text")
      .attr("class", "label")
      .attr("x", width -85)
      .attr("y", height-120)
      .style("text-anchor", "start")
-     .text("Healthy (1-50)");
+     .text("Healthy (1-49)");
 
   svg.append("text")
      .attr("class", "label")
@@ -300,35 +302,35 @@ function init(){
      .attr("x", width -115)
      .attr("y", height-435)
      .style("text-anchor", "start")
-     .text(" > 9");
+     .text(" > 9.00");
 
   svg.append("text")
      .attr("class", "label")
      .attr("x", width -115)
      .attr("y", height-400)
      .style("text-anchor", "start")
-     .text("7 - 9");
+     .text("7.00 - 8.99");
     
   svg.append("text")
      .attr("class", "label")
      .attr("x", width -115)
      .attr("y", height-365)
      .style("text-anchor", "start")
-     .text("5 - 7");
+     .text("5.00 - 6.99");
 
   svg.append("text")
      .attr("class", "label")
      .attr("x", width -115)
      .attr("y", height-335)
      .style("text-anchor", "start")
-     .text("3 - 5");
+     .text("3.00 - 4.99");
     
   svg.append("text")
      .attr("class", "label")
      .attr("x", width -115)
      .attr("y", height-300)
      .style("text-anchor", "start")
-     .text("1 - 3");
+     .text("1.00 - 2.99");
         
   //Asthma legend label
   svg.append("text")
