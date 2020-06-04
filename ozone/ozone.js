@@ -196,13 +196,13 @@ function init(){
   var gAsthma = svg.append("g");
   var asthPoint = {x: width / 3 - 30, y: 25};
   var asthDim = {w: 200, h: 100};
-  //Make grouping rect
-  gAsthma.append("rect")
-     .attr("x", asthPoint.x)
-     .attr("y", asthPoint.y)
-     .attr("width", asthDim.w)
-     .attr("height", asthDim.h)
-     .style("fill", "none");
+  //Make grouping rect, debuggin purposes
+  //gAsthma.append("rect")
+  //   .attr("x", asthPoint.x)
+  //   .attr("y", asthPoint.y)
+  //   .attr("width", asthDim.w)
+  //   .attr("height", asthDim.h)
+  //   .style("fill", "none");
   //Make asthma legend label
   gAsthma.append("text")
      .text("Reported Cases per 100 People")
@@ -241,6 +241,51 @@ function init(){
     });
 
   //Legend for AQI
+  var gAqi = svg.append("g");
+  var aqiPoint = {x: 3*width/4 - 15, y: 25};
+  var aqiDim = {w: 200, h: 100};
+  //Make grouping rect for debugging
+  //gAqi.append("rect")
+  //   .attr("x", aqiPoint.x)
+  //   .attr("y", aqiPoint.y)
+  //   .attr("width", aqiDim.w)
+  //   .attr("height", aqiDim.h)
+  //   .style("fill", "black");
+  //Make aqi title
+  gAqi.append("text")
+     .text("Ozone Air Quality Index")
+     .attr("x", aqiPoint.x + 74)
+     .attr("y", aqiPoint.y - 3)
+     .attr("text-anchor", "middle")
+     .style("font-size", "14px")
+     .style("fill", "#fc9272");
+  //Make color containing rect
+  gAqi.append("rect")
+      .attr("x", aqiPoint.x)
+      .attr("y", aqiPoint.y + 4)
+      .attr("width", aqiDim.w / 5 + 6)
+      .attr("height", aqiDim.h + 6)
+      .style("fill", "black");
+  //Make color rects for each color in the aqi range
+  ["#de2d26", "#fc9272", "#fee0d2", "#FFFFFF"].forEach(
+    function(color, i){
+      gAqi.append("rect")
+         .attr("x", aqiPoint.x + 3)
+         .attr("y", aqiPoint.y + 4 + 3 + (i * (aqiDim.h/4)))
+         .attr("width", aqiDim.w / 5)
+         .attr("height", aqiDim.h / 4)
+         .style("fill", color);
+    });
+  //Make labels for each color rect
+  ["Hazardous (101+)", "Moderate (51 - 100)", "Healthy (1 - 50)", "Data Not Available"].forEach(
+    function(label, i){
+      gAqi.append("text")
+         .text(label)
+         .attr("x", aqiPoint.x + 60)
+         .attr("y", aqiPoint.y + 24 + (i * (aqiDim.h/5 + 5)))
+         .style("fill", "black")
+         .style("font-size", "12px");
+    });
 
   //Generate default map to COPD and 2019 AQI
   map("2019");
