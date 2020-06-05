@@ -337,5 +337,8 @@ function init(){
       d3.select("#b18")
         .style("border-color", "white")
         .style("color", "purple");
-    });
+    })
+    //Initialize this one to have the white border and purple text
+    .style("border-color", "white")
+    .style("color", "purple");
 }
