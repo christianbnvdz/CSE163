@@ -304,20 +304,38 @@ function init(){
       map("" + this.value);
     });
  
-    //for State of the Air from American Lung Association
-    d3.select("#b16")
-        .on("click", function(d,i) {
-        console.log("b16");
-        health("Adult");
-        });
-     d3.select("#b17")
-        .on("click", function(d,i) {
-        console.log("b17");
-        health("child");
-        });
-     d3.select("#b18")
-        .on("click", function(d,i) {
-        console.log("b18");
-        health("lung");
-        });
+  //for State of the Air from American Lung Association
+  d3.select("#b16")
+    .on("click", function(d,i) {
+      console.log("b16");
+      health("Adult");
+      d3.selectAll("button")
+        .style("border-color", "black")
+        .style("color", "black");
+      d3.select("#b16")
+        .style("border-color", "white")
+        .style("color", "purple");
+    });
+  d3.select("#b17")
+    .on("click", function(d,i) {
+      console.log("b17");
+      health("child");
+      d3.selectAll("button")
+        .style("border-color", "black")
+        .style("color", "black");
+      d3.select("#b17")
+        .style("border-color", "white")
+        .style("color", "purple");
+    });
+  d3.select("#b18")
+    .on("click", function(d,i) {
+      console.log("b18");
+      health("lung");
+      d3.selectAll("button")
+        .style("border-color", "black") 
+        .style("color", "black");
+      d3.select("#b18")
+        .style("border-color", "white")
+        .style("color", "purple");
+    });
 }

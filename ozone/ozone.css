@@ -9,6 +9,11 @@ svg {
   font: 10px sans-serif;
 }
 
+button {
+  border-radius: 5px;
+  border-color: black;
+}
+
 #visSpace {
   text-align: center; 
   width: auto;
@@ -18,11 +23,20 @@ svg {
 #inputs {
   margin: auto;
   text-align: center;
+  font: 12px sans-serif;
 }
 
 /* Paragraph tag of input divs */
 #aqi-inputs p, #asthma-inputs p {
   margin: 0px 0px 10px 0px;
+}
+
+#asthma-inputs p {
+  color: purple;
+}
+
+#aqi-inputs-title {
+  color: #fc9272;
 }
 
 /* Input slider and buttons */
