@@ -14,8 +14,18 @@ svg {
 }
 
 button {
-  border-radius: 5px;
-  border-color: black;
+  border-radius: 10px; 
+  background-color: white;
+  border-color: purple;
+  border-width: 1px;
+  color: purple;
+}
+
+.buttonActive {
+  border-color: purple;
+  border-width: 1px;
+  background-color: purple;
+  color: white;
 }
 
 #visSpace {

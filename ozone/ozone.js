@@ -213,11 +213,11 @@ function init(){
      .style("fill", "purple");
   //Make color container rect
   gAsthma.append("rect")
-     .attr("x", asthPoint.x)
-     .attr("y", asthPoint.y)
-     .attr("width", asthDim.w / 5 + 6)
-     .attr("height", asthDim.h + 6)
-     .style("fill", "black");
+     .attr("x", asthPoint.x + 2)
+     .attr("y", asthPoint.y + 2)
+     .attr("width", asthDim.w / 5 + 2)
+     .attr("height", asthDim.h + 2)
+     .style("fill", "#cecece");
   //Make rect for each one in the athma color range blotches
   ["#980043", "#dd1c77", "#df65b0", "#d7b5d8", "#f1eef6"].forEach(
     function(color, i){
@@ -261,11 +261,11 @@ function init(){
      .style("fill", "#fc9272");
   //Make color containing rect
   gAqi.append("rect")
-      .attr("x", aqiPoint.x)
-      .attr("y", aqiPoint.y + 4)
-      .attr("width", aqiDim.w / 5 + 6)
-      .attr("height", aqiDim.h + 6)
-      .style("fill", "black");
+      .attr("x", aqiPoint.x + 2)
+      .attr("y", aqiPoint.y + 6)
+      .attr("width", aqiDim.w / 5 + 2)
+      .attr("height", aqiDim.h + 2)
+      .style("fill", "#cecece");
   //Make color rects for each color in the aqi range
   ["#de2d26", "#fc9272", "#fee0d2", "#FFFFFF"].forEach(
     function(color, i){
@@ -287,9 +287,11 @@ function init(){
          .style("font-size", "12px");
     });
 
-  //Generate default map to COPD and 2019 AQI
+  //Generate default map to Adult and 2019 AQI
   map("2019");
-  health("lungs");
+  health("Adult");
+  //Since adult map is on, set adult button(b16) to on
+  d3.select("#b16").classed("buttonActive", true);
 
   //Event handler for slider
   d3.select("#aqi-slider")
@@ -310,35 +312,27 @@ function init(){
       console.log("b16");
       health("Adult");
       d3.selectAll("button")
-        .style("border-color", "black")
-        .style("color", "black");
-      d3.select("#b16")
-        .style("border-color", "white")
-        .style("color", "purple");
+        .classed("buttonActive", false);
+      d3.select(this)
+        .classed("buttonActive", true);
     });
   d3.select("#b17")
     .on("click", function(d,i) {
       console.log("b17");
       health("child");
       d3.selectAll("button")
-        .style("border-color", "black")
-        .style("color", "black");
-      d3.select("#b17")
-        .style("border-color", "white")
-        .style("color", "purple");
+        .classed("buttonActive", false);
+      d3.select(this)
+        .classed("buttonActive", true);
     });
   d3.select("#b18")
     .on("click", function(d,i) {
       console.log("b18");
       health("lung");
       d3.selectAll("button")
-        .style("border-color", "black") 
-        .style("color", "black");
-      d3.select("#b18")
-        .style("border-color", "white")
-        .style("color", "purple");
+        .classed("buttonActive", false);
+      d3.select(this)
+        .classed("buttonActive", true);
     })
-    //Initialize this one to have the white border and purple text
-    .style("border-color", "white")
-    .style("color", "purple");
+
 }
