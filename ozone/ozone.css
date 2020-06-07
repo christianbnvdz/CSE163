@@ -4,6 +4,10 @@ h1 {
   color: steelblue;
 }
 
+#alaLi {
+  font-size: 12px;
+}
+
 /*all CSS below taken from http://bl.ocks.org/mbostock/5562380*/
 svg {
   font: 10px sans-serif;
